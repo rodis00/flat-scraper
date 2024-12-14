@@ -24,4 +24,8 @@ public class FlatService {
     public List<Flat> flats() {
         return flatRepository.findAll();
     }
+
+    public List<Flat> findAll() {
+        return flatRepository.findAll();
+    }
 }

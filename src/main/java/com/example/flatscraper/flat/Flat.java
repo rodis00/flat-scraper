@@ -14,9 +14,9 @@ public class Flat {
 
     private String url;
 
-    private Integer price;
+    private Double price;
 
-    private Integer pricePerMeter;
+    private Double pricePerMeter;
 
     private String address;
 
@@ -86,19 +86,19 @@ public class Flat {
         this.url = url;
     }
 
-    public Integer getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public Integer getPricePerMeter() {
+    public Double getPricePerMeter() {
         return pricePerMeter;
     }
 
-    public void setPricePerMeter(Integer pricePerMeter) {
+    public void setPricePerMeter(Double pricePerMeter) {
         this.pricePerMeter = pricePerMeter;
     }
 
