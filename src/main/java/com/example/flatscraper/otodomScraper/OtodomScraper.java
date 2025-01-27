@@ -101,7 +101,7 @@ public class OtodomScraper {
         Element pages = doc.getElementsByClass("css-43nhzf").last();
         if (pages == null) {
             logger.warn("Cannot find pages number");
-            return 1;
+            return 36; //TODO: fix pages number
         }
         String pagesText = pages.text();
         return Integer.parseInt(pagesText);
