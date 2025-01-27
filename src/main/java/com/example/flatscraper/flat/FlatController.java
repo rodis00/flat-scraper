@@ -1,8 +1,6 @@
 package com.example.flatscraper.flat;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,5 +17,10 @@ public class FlatController {
     @GetMapping
     public List<Flat> flats() {
         return flatService.flats();
+    }
+
+    @PostMapping("/predict-price")
+    public double predictFlatPrice(@RequestBody FlatRequest flat) {
+        return flatService.predictFlatPrice(flat);
     }
 }
