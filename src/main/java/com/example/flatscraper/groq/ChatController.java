@@ -2,17 +2,26 @@ package com.example.flatscraper.groq;
 
 import com.example.flatscraper.flat.FlatRequest;
 import com.example.flatscraper.flat.FlatService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import groovy.util.logging.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Description;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.function.Function;
 
 @RestController
 @RequestMapping("api/v1/chat")
+@Slf4j
 public class ChatController {
 
+    private static final Logger log = LoggerFactory.getLogger(ChatController.class);
     private final ChatClient chatClient;
     private final FlatService flatService;
 
@@ -21,23 +30,49 @@ public class ChatController {
         this.flatService = flatService;
     }
 
-    @GetMapping("/ask")
-    public ChatResponse ask(@RequestParam(value = "message") String message) {
+    @PostMapping("/ask")
+    public ChatResponse ask(@RequestBody ChatReq chatReq) {
         String response = chatClient.prompt()
-                .user(message)
+                .user(chatReq.message())
                 .call()
                 .content();
         return new ChatResponse(response);
     }
 
     @PostMapping("/predict-price")
-    public ChatResponse predictPrice(@RequestBody FlatRequest flatRequest) {
+    public ChatResponse predictPrice(@RequestBody ChatReq chatReq) {
+        FlatRequest flatRequest = extractFlatData(chatReq.message());
+
         String response = chatClient.prompt()
-                .user("Jak jest prawdopodobna cena takiego mieszkania: " + flatRequest.toString())
+                .user(flatRequest.toString())
                 .functions("knnFunction")
                 .call()
                 .content();
         return new ChatResponse(response);
+    }
+
+    public FlatRequest extractFlatData(String message) {
+        String response = chatClient.prompt()
+                .user("wydobądź odpowiednie dane z wiadomości: " + message +
+                        " i zwróć tylko obiekt formacie JSON { area, rooms, floor, yearOfConstruction}" +
+                        " jeśli nie uda się wydobyć danych zwróć pusty obiekt lub null dla brakujących danych")
+                .call()
+                .content();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            String json = extractDataBetweenBrackets(response);
+            return objectMapper.readValue(json, FlatRequest.class);
+        } catch (Exception e) {
+            log.error("Nie udało się wydobyć danych z wiadomości: ", e);
+            throw new RuntimeException("Nie udało się wydobyć danych z wiadomości");
+        }
+    }
+
+    public String extractDataBetweenBrackets(String response) {
+        int start = response.indexOf("{");
+        int end = response.indexOf("}");
+        return response.substring(start, end + 1);
     }
 
     @Bean
