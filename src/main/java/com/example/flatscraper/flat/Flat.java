@@ -1,10 +1,8 @@
 package com.example.flatscraper.flat;
 
-import jakarta.persistence.*;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 
 @Entity
 public class Flat {
@@ -14,21 +12,23 @@ public class Flat {
 
     private String url;
 
-    private Double price;
+    private String imageUrl;
 
-    private Double pricePerMeter;
+    private String price;
+
+    private String pricePerMeter;
 
     private String address;
 
-    private Double area;
+    private String area;
 
-    private Integer rooms;
+    private String rooms;
 
     private String heating;
 
-    private Integer floor;
+    private String floor;
 
-    private Double rent;
+    private String rent;
 
     private String stateOfFinishing;
 
@@ -36,36 +36,29 @@ public class Flat {
 
     private String formOfOwnership;
 
-    private LocalDate availableFrom;
+    private String availableFrom;
 
     private String advertiserType;
 
-    @ElementCollection
-    private List<String> additionalInfo = new ArrayList<>();
+    private String additionalInfo;
 
-    private Integer yearOfConstruction;
+    private String yearOfConstruction;
 
     private String elevator;
 
     private String buildingType;
 
-    @ElementCollection
-    private List<String> safety = new ArrayList<>();
+    private String safety;
 
     private String buildingMaterial;
 
     private String windows;
 
-    private String energyCertificate;
+    private String equipment;
 
-    @ElementCollection
-    private List<String> equipment = new ArrayList<>();
+    private String security;
 
-    @ElementCollection
-    private List<String> security = new ArrayList<>();
-
-    @Column(columnDefinition = "TEXT")
-    private String description;
+    private String media;
 
     public Flat() {
     }
@@ -86,19 +79,19 @@ public class Flat {
         this.url = url;
     }
 
-    public Double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
-    public Double getPricePerMeter() {
+    public String getPricePerMeter() {
         return pricePerMeter;
     }
 
-    public void setPricePerMeter(Double pricePerMeter) {
+    public void setPricePerMeter(String pricePerMeter) {
         this.pricePerMeter = pricePerMeter;
     }
 
@@ -110,19 +103,19 @@ public class Flat {
         this.address = address;
     }
 
-    public Double getArea() {
+    public String getArea() {
         return area;
     }
 
-    public void setArea(Double area) {
+    public void setArea(String area) {
         this.area = area;
     }
 
-    public Integer getRooms() {
+    public String getRooms() {
         return rooms;
     }
 
-    public void setRooms(Integer rooms) {
+    public void setRooms(String rooms) {
         this.rooms = rooms;
     }
 
@@ -134,19 +127,19 @@ public class Flat {
         this.heating = heating;
     }
 
-    public Integer getFloor() {
+    public String getFloor() {
         return floor;
     }
 
-    public void setFloor(Integer floor) {
+    public void setFloor(String floor) {
         this.floor = floor;
     }
 
-    public Double getRent() {
+    public String getRent() {
         return rent;
     }
 
-    public void setRent(Double rent) {
+    public void setRent(String rent) {
         this.rent = rent;
     }
 
@@ -174,11 +167,11 @@ public class Flat {
         this.formOfOwnership = formOfOwnership;
     }
 
-    public LocalDate getAvailableFrom() {
+    public String getAvailableFrom() {
         return availableFrom;
     }
 
-    public void setAvailableFrom(LocalDate availableFrom) {
+    public void setAvailableFrom(String availableFrom) {
         this.availableFrom = availableFrom;
     }
 
@@ -190,19 +183,19 @@ public class Flat {
         this.advertiserType = advertiserType;
     }
 
-    public List<String> getAdditionalInfo() {
+    public String getAdditionalInfo() {
         return additionalInfo;
     }
 
-    public void setAdditionalInfo(List<String> additionalInfo) {
+    public void setAdditionalInfo(String additionalInfo) {
         this.additionalInfo = additionalInfo;
     }
 
-    public Integer getYearOfConstruction() {
+    public String getYearOfConstruction() {
         return yearOfConstruction;
     }
 
-    public void setYearOfConstruction(Integer yearOfConstruction) {
+    public void setYearOfConstruction(String yearOfConstruction) {
         this.yearOfConstruction = yearOfConstruction;
     }
 
@@ -222,11 +215,11 @@ public class Flat {
         this.buildingType = buildingType;
     }
 
-    public List<String> getSafety() {
+    public String getSafety() {
         return safety;
     }
 
-    public void setSafety(List<String> safety) {
+    public void setSafety(String safety) {
         this.safety = safety;
     }
 
@@ -246,67 +239,35 @@ public class Flat {
         this.windows = windows;
     }
 
-    public String getEnergyCertificate() {
-        return energyCertificate;
-    }
-
-    public void setEnergyCertificate(String energyCertificate) {
-        this.energyCertificate = energyCertificate;
-    }
-
-    public List<String> getEquipment() {
+    public String getEquipment() {
         return equipment;
     }
 
-    public void setEquipment(List<String> equipment) {
+    public void setEquipment(String equipment) {
         this.equipment = equipment;
     }
 
-    public List<String> getSecurity() {
+    public String getSecurity() {
         return security;
     }
 
-    public void setSecurity(List<String> security) {
+    public void setSecurity(String security) {
         this.security = security;
     }
 
-    public String getDescription() {
-        return description;
+    public String getMedia() {
+        return media;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setMedia(String media) {
+        this.media = media;
     }
 
-    @Override
-    public String toString() {
-        return "Flat{" +
-                "id=" + id +
-                ", url='" + url + '\'' +
-                ", price=" + price +
-                ", pricePerMeter=" + pricePerMeter +
-                ", address='" + address + '\'' +
-                ", area=" + area +
-                ", rooms=" + rooms +
-                ", heating='" + heating + '\'' +
-                ", floor=" + floor +
-                ", rent=" + rent +
-                ", stateOfFinishing='" + stateOfFinishing + '\'' +
-                ", market='" + market + '\'' +
-                ", formOfOwnership='" + formOfOwnership + '\'' +
-                ", availableFrom=" + availableFrom +
-                ", advertiserType='" + advertiserType + '\'' +
-                ", additionalInfo=" + additionalInfo +
-                ", yearOfConstruction=" + yearOfConstruction +
-                ", elevator='" + elevator + '\'' +
-                ", buildingType='" + buildingType + '\'' +
-                ", safety=" + safety +
-                ", buildingMaterial='" + buildingMaterial + '\'' +
-                ", windows='" + windows + '\'' +
-                ", energyCertificate='" + energyCertificate + '\'' +
-                ", equipment=" + equipment +
-                ", security=" + security +
-                ", description='" + description + '\'' +
-                '}';
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

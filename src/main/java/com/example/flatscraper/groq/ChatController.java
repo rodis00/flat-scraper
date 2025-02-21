@@ -76,7 +76,7 @@ public class ChatController {
     }
 
     @Bean
-    @Description("Oszacuj cenę mieszkania za pomocą knn")
+    @Description("Oszacuj cenę mieszkania za pomocą knn i zwróć odpowiedź w języku polskim lub takim w jakim było pytanie")
     public Function<FlatRequest, ChatResponse> knnFunction() {
         return flatRequest -> {
             double predictedPrice = flatService.predictFlatPrice(flatRequest);
