@@ -5,5 +5,6 @@ public enum FieldName {
     ROOMS,
     FLOOR,
     YEAR_OF_CONSTRUCTION,
-    PRICE
+    PRICE,
+    PRICE_PER_METER
 }

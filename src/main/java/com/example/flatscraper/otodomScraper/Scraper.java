@@ -1,6 +1,7 @@
 package com.example.flatscraper.otodomScraper;
 
 import com.example.flatscraper.flat.Flat;
+import com.example.flatscraper.flat.FlatRecord;
 import com.example.flatscraper.flat.FlatService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -38,9 +39,9 @@ public class Scraper {
             String pageUrl = baseUrl + "&page=" + i;
             List<String> flatLinks = getFlatLinksFromPage(pageUrl);
 
-            List<Flat> flats = new ArrayList<>();
+            List<FlatRecord> flats = new ArrayList<>();
             for (String flatLink: flatLinks) {
-                Flat flat = scrapeFlat(flatLink);
+                FlatRecord flat = scrapeFlat(flatLink);
                 if (flat != null) {
                     flats.add(flat);
                 }
@@ -52,8 +53,8 @@ public class Scraper {
         log.info("Scraping finished");
     }
 
-    private void validateFlats(List<Flat> flats) {
-        flats.removeIf(flat -> flat.getPrice().isEmpty() && flat.getArea().isEmpty() && flat.getRooms().isEmpty());
+    private void validateFlats(List<FlatRecord> flats) {
+        flats.removeIf(flat -> flat.price().isEmpty() && flat.area().isEmpty() && flat.rooms().isEmpty());
     }
 
     private List<String> getFlatLinksFromPage(String flatUrl) throws IOException {
@@ -71,7 +72,7 @@ public class Scraper {
         return flatsLinks;
     }
 
-    private Flat scrapeFlat(String link) throws IOException {
+    private FlatRecord scrapeFlat(String link) throws IOException {
 
         if (flatService.checkIfFlatExists(link)) {
             log.info("Flat already exists in database");
@@ -113,34 +114,32 @@ public class Scraper {
         String security = doc.selectXpath("//*[@id=\"__next\"]/div[1]/main/div[1]/div[1]/div[2]/div[3]/div[2]/div/div/div[3]/p[2]").text();
         String media = doc.selectXpath("//*[@id=\"__next\"]/div[1]/main/div[1]/div[1]/div[2]/div[3]/div[2]/div/div/div[5]/p[2]").text();
 
-
-        Flat flat = new Flat();
-        flat.setUrl(link);
-        flat.setImageUrl(imageUrl);
-        flat.setPrice(price);
-        flat.setPricePerMeter(pricePerMeter);
-        flat.setAddress(address);
-        flat.setArea(area);
-        flat.setRooms(rooms);
-        flat.setHeating(heating);
-        flat.setFloor(floor);
-        flat.setRent(rent);
-        flat.setStateOfFinishing(stateOfFinishing);
-        flat.setMarket(market);
-        flat.setFormOfOwnership(formOfOwnership);
-        flat.setAvailableFrom(availableFrom);
-        flat.setAdvertiserType(advertiserType);
-        flat.setAdditionalInfo(additionalInfo);
-        flat.setYearOfConstruction(yearOfConstruction);
-        flat.setElevator(elevator);
-        flat.setBuildingType(buildingType);
-        flat.setBuildingMaterial(buildingMaterial);
-        flat.setWindows(windows);
-        flat.setSafety(safety);
-        flat.setEquipment(equipment);
-        flat.setSecurity(security);
-        flat.setMedia(media);
-
-        return flat;
+        return new FlatRecord(
+                link,
+                imageUrl,
+                price,
+                pricePerMeter,
+                address,
+                area,
+                rooms,
+                heating,
+                floor,
+                rent,
+                stateOfFinishing,
+                market,
+                formOfOwnership,
+                availableFrom,
+                advertiserType,
+                additionalInfo,
+                yearOfConstruction,
+                elevator,
+                buildingType,
+                safety,
+                buildingMaterial,
+                windows,
+                equipment,
+                security,
+                media
+        );
     }
 }

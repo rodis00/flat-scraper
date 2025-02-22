@@ -20,8 +20,14 @@ public class FlatService {
         this.flatRepository = flatRepository;
     }
 
-    public void saveAll(List<Flat> flats) {
-        flatRepository.saveAll(flats);
+    public void saveAll(List<FlatRecord> flats) {
+        List<Flat> cleanedFlats = new ArrayList<>();
+
+        for (FlatRecord flatRecord: flats) {
+            cleanedFlats.add(cleanFlatData(flatRecord));
+        }
+
+        flatRepository.saveAll(cleanedFlats);
     }
 
     public boolean checkIfFlatExists(String url) {
@@ -36,6 +42,7 @@ public class FlatService {
     private Sort getSort(FieldName filterBy) {
         return switch (filterBy) {
             case PRICE -> Sort.by(Sort.Direction.ASC, "price");
+            case PRICE_PER_METER -> Sort.by(Sort.Direction.ASC, "pricePerMeter");
             case AREA -> Sort.by(Sort.Direction.ASC, "area");
             case ROOMS -> Sort.by(Sort.Direction.ASC, "rooms");
             case FLOOR -> Sort.by(Sort.Direction.ASC, "floor");
@@ -61,15 +68,17 @@ public class FlatService {
         double averageFloor = calculateAverage(FieldName.FLOOR, flats);
         double averageYearOfConstruction = calculateAverage(FieldName.YEAR_OF_CONSTRUCTION, flats);
         double averagePrice = calculateAverage(FieldName.PRICE, flats);
+        double averagePricePerMeter = calculateAverage(FieldName.PRICE_PER_METER, flats);
 
         for (Flat flat : flats) {
             xTrain.add(new double[]{
-                    (flat.getArea() != null) ? parseToDouble(flat.getArea()) : averageArea, // Imputacja brakujących danych
-                    (flat.getRooms() != null) ? parseToDouble(flat.getRooms()) : averageRooms,
-                    (flat.getFloor() != null) ? parseToDouble(flat.getFloor()) : averageFloor,
-                    (flat.getYearOfConstruction() != null) ? parseToDouble(flat.getYearOfConstruction()) : averageYearOfConstruction
+                    (flat.getArea() != null) ? flat.getArea() : averageArea, // Imputacja brakujących danych
+                    (flat.getRooms() != null) ? flat.getRooms() : averageRooms,
+                    (flat.getFloor() != null) ? flat.getFloor() : averageFloor,
+                    (flat.getYearOfConstruction() != null) ? flat.getYearOfConstruction() : averageYearOfConstruction,
+                    (flat.getPricePerMeter() != null) ? flat.getPricePerMeter() : averagePricePerMeter
             });
-            yTrain.add(flat.getPrice() != null ? parseToDouble(flat.getPrice()) : averagePrice);
+            yTrain.add(flat.getPrice() != null ? flat.getPrice() : averagePrice);
         }
 
         knn.fit(xTrain, yTrain);
@@ -79,7 +88,7 @@ public class FlatService {
                 flatRequest.area(),
                 flatRequest.rooms(),
                 flatRequest.floor(),
-                flatRequest.yearOfConstruction()
+                flatRequest.yearOfConstruction(),
         };
 
         return knn.predictPrice(newApartment);
@@ -92,30 +101,65 @@ public class FlatService {
         return switch (fieldName) {
             case AREA -> flats.stream()
                     .filter(flat -> flat.getArea() != null)
-                    .mapToDouble(flat -> parseToDouble(flat.getArea()))
+                    .mapToDouble(flat -> flat.getArea())
                     .average()
                     .orElse(0);
             case ROOMS -> flats.stream()
                     .filter(flat -> flat.getRooms() != null)
-                    .mapToDouble(flat -> parseToDouble(flat.getRooms()))
+                    .mapToDouble(flat -> flat.getRooms())
                     .average()
                     .orElse(0);
             case FLOOR -> flats.stream()
                     .filter(flat -> flat.getFloor() != null)
-                    .mapToDouble(flat -> parseToDouble(flat.getFloor()))
+                    .mapToDouble(flat -> flat.getFloor())
                     .average()
                     .orElse(0);
             case YEAR_OF_CONSTRUCTION -> flats.stream()
                     .filter(flat -> flat.getYearOfConstruction() != null)
-                    .mapToInt(flat -> parseToInt(flat.getYearOfConstruction()))
+                    .mapToInt(flat -> flat.getYearOfConstruction())
                     .average()
                     .orElse(0);
             case PRICE -> flats.stream()
                     .filter(flat -> flat.getPrice() != null)
-                    .mapToDouble(flat -> parseToDouble(flat.getPrice()))
+                    .mapToDouble(flat -> flat.getPrice())
+                    .average()
+                    .orElse(0);
+            case PRICE_PER_METER -> flats.stream()
+                    .filter(flat -> flat.getPricePerMeter() != null)
+                    .mapToDouble(flat -> flat.getPricePerMeter())
                     .average()
                     .orElse(0);
         };
+    }
+
+    private Flat cleanFlatData(FlatRecord record) {
+        Flat flat = new Flat();
+        flat.setUrl(record.url());
+        flat.setImageUrl(record.imageUrl());
+        flat.setPrice(parseToDouble(record.price()));
+        flat.setPricePerMeter(parseToDouble(record.pricePerMeter()));
+        flat.setAddress(record.address());
+        flat.setArea(parseToDouble(record.area()));
+        flat.setRooms(parseToInt(record.rooms()));
+        flat.setHeating(record.heating());
+        flat.setFloor(parseFloorToInt(record.floor()));
+        flat.setRent(parseToDouble(record.rent()));
+        flat.setStateOfFinishing(record.stateOfFinishing());
+        flat.setMarket(record.market());
+        flat.setFormOfOwnership(record.formOfOwnership());
+        flat.setAvailableFrom(record.availableFrom());
+        flat.setAdvertiserType(record.advertiserType());
+        flat.setAdditionalInfo(record.additionalInfo());
+        flat.setYearOfConstruction(parseToInt(record.yearOfConstruction()));
+        flat.setElevator(record.elevator());
+        flat.setBuildingType(record.buildingType());
+        flat.setSafety(record.safety());
+        flat.setBuildingMaterial(record.buildingMaterial());
+        flat.setWindows(record.windows());
+        flat.setEquipment(record.equipment());
+        flat.setSecurity(record.security());
+        flat.setMedia(record.media());
+        return flat;
     }
 
     private double parseToDouble(String value) {
@@ -128,9 +172,18 @@ public class FlatService {
 
     private int parseToInt(String value) {
         return Optional.ofNullable(value)
-                .map(v -> v.replaceAll("[^0-9]", "")) // Usuwa znaki inne niż cyfry
+                .map(v -> v.replaceAll("[^0-9]", ""))
                 .filter(v -> !v.isEmpty())
                 .map(Integer::parseInt)
                 .orElse(0);
+    }
+
+    private int parseFloorToInt(String value) {
+        try {
+            value = value.split("/")[0];
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 }

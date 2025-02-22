@@ -16,21 +16,21 @@ public class Flat {
 
     private String imageUrl;
 
-    private String price;
+    private Double price;
 
-    private String pricePerMeter;
+    private Double pricePerMeter;
 
     private String address;
 
-    private String area;
+    private Double area;
 
-    private String rooms;
+    private Integer rooms;
 
     private String heating;
 
-    private String floor;
+    private Integer floor;
 
-    private String rent;
+    private Double rent;
 
     private String stateOfFinishing;
 
@@ -44,7 +44,7 @@ public class Flat {
 
     private String additionalInfo;
 
-    private String yearOfConstruction;
+    private Integer yearOfConstruction;
 
     private String elevator;
 
@@ -81,19 +81,19 @@ public class Flat {
         this.url = url;
     }
 
-    public String getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public String getPricePerMeter() {
+    public Double getPricePerMeter() {
         return pricePerMeter;
     }
 
-    public void setPricePerMeter(String pricePerMeter) {
+    public void setPricePerMeter(Double pricePerMeter) {
         this.pricePerMeter = pricePerMeter;
     }
 
@@ -105,19 +105,19 @@ public class Flat {
         this.address = address;
     }
 
-    public String getArea() {
+    public Double getArea() {
         return area;
     }
 
-    public void setArea(String area) {
+    public void setArea(Double area) {
         this.area = area;
     }
 
-    public String getRooms() {
+    public Integer getRooms() {
         return rooms;
     }
 
-    public void setRooms(String rooms) {
+    public void setRooms(Integer rooms) {
         this.rooms = rooms;
     }
 
@@ -129,19 +129,19 @@ public class Flat {
         this.heating = heating;
     }
 
-    public String getFloor() {
+    public Integer getFloor() {
         return floor;
     }
 
-    public void setFloor(String floor) {
+    public void setFloor(Integer floor) {
         this.floor = floor;
     }
 
-    public String getRent() {
+    public Double getRent() {
         return rent;
     }
 
-    public void setRent(String rent) {
+    public void setRent(Double rent) {
         this.rent = rent;
     }
 
@@ -193,11 +193,11 @@ public class Flat {
         this.additionalInfo = additionalInfo;
     }
 
-    public String getYearOfConstruction() {
+    public Integer getYearOfConstruction() {
         return yearOfConstruction;
     }
 
-    public void setYearOfConstruction(String yearOfConstruction) {
+    public void setYearOfConstruction(Integer yearOfConstruction) {
         this.yearOfConstruction = yearOfConstruction;
     }
 
