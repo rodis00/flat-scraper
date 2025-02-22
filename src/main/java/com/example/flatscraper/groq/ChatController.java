@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Description;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,24 +32,24 @@ public class ChatController {
     }
 
     @PostMapping("/ask")
-    public ChatResponse ask(@RequestBody ChatReq chatReq) {
+    public ResponseEntity<ChatResponse> ask(@RequestBody ChatRequest chatRequest) {
         String response = chatClient.prompt()
-                .user(chatReq.message())
+                .user(chatRequest.message())
                 .call()
                 .content();
-        return new ChatResponse(response);
+        return ResponseEntity.ok(new ChatResponse(response));
     }
 
     @PostMapping("/predict-price")
-    public ChatResponse predictPrice(@RequestBody ChatReq chatReq) {
-        FlatRequest flatRequest = extractFlatData(chatReq.message());
+    public ResponseEntity<ChatResponse> predictPrice(@RequestBody ChatRequest chatRequest) {
+        FlatRequest flatRequest = extractFlatData(chatRequest.message());
 
         String response = chatClient.prompt()
                 .user(flatRequest.toString())
                 .functions("knnFunction")
                 .call()
                 .content();
-        return new ChatResponse(response);
+        return ResponseEntity.ok(new ChatResponse(response));
     }
 
     public FlatRequest extractFlatData(String message) {

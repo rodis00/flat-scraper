@@ -1,10 +1,15 @@
 package com.example.flatscraper.flat;
 
 import com.example.flatscraper.utils.KNN;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FlatService {
@@ -23,8 +28,20 @@ public class FlatService {
         return flatRepository.existsByUrl(url);
     }
 
-    public List<Flat> flats() {
-        return flatRepository.findAll();
+    public Page<Flat> flats(int page, FieldName filterBy) {
+        Pageable pageable = PageRequest.of(page, 20, getSort(filterBy));
+        return flatRepository.findAll(pageable);
+    }
+
+    private Sort getSort(FieldName filterBy) {
+        return switch (filterBy) {
+            case PRICE -> Sort.by(Sort.Direction.ASC, "price");
+            case AREA -> Sort.by(Sort.Direction.ASC, "area");
+            case ROOMS -> Sort.by(Sort.Direction.ASC, "rooms");
+            case FLOOR -> Sort.by(Sort.Direction.ASC, "floor");
+            case YEAR_OF_CONSTRUCTION -> Sort.by(Sort.Direction.ASC, "yearOfConstruction");
+            case null, default -> Sort.unsorted();
+        };
     }
 
     public List<Flat> findAll() {
@@ -47,12 +64,12 @@ public class FlatService {
 
         for (Flat flat : flats) {
             xTrain.add(new double[]{
-                    (flat.getArea() != null) ? parseArea(flat.getArea()) : averageArea, // Imputacja brakujących danych
-                    (flat.getRooms() != null) ? parseRooms(flat.getRooms()) : averageRooms,
-                    (flat.getFloor() != null) ? parseFloor(flat.getFloor()) : averageFloor,
-                    (flat.getYearOfConstruction() != null) ? parseYearOfConstruction(flat.getYearOfConstruction()) : averageYearOfConstruction
+                    (flat.getArea() != null) ? parseToDouble(flat.getArea()) : averageArea, // Imputacja brakujących danych
+                    (flat.getRooms() != null) ? parseToDouble(flat.getRooms()) : averageRooms,
+                    (flat.getFloor() != null) ? parseToDouble(flat.getFloor()) : averageFloor,
+                    (flat.getYearOfConstruction() != null) ? parseToDouble(flat.getYearOfConstruction()) : averageYearOfConstruction
             });
-            yTrain.add(flat.getPrice() != null ? parsePrice(flat.getPrice()) : averagePrice);
+            yTrain.add(flat.getPrice() != null ? parseToDouble(flat.getPrice()) : averagePrice);
         }
 
         knn.fit(xTrain, yTrain);
@@ -75,74 +92,45 @@ public class FlatService {
         return switch (fieldName) {
             case AREA -> flats.stream()
                     .filter(flat -> flat.getArea() != null)
-                    .mapToDouble(flat -> parseArea(flat.getArea()))
+                    .mapToDouble(flat -> parseToDouble(flat.getArea()))
                     .average()
                     .orElse(0);
             case ROOMS -> flats.stream()
                     .filter(flat -> flat.getRooms() != null)
-                    .mapToDouble(flat -> parseRooms(flat.getRooms()))
+                    .mapToDouble(flat -> parseToDouble(flat.getRooms()))
                     .average()
                     .orElse(0);
             case FLOOR -> flats.stream()
                     .filter(flat -> flat.getFloor() != null)
-                    .mapToDouble(flat -> parseFloor(flat.getFloor()))
+                    .mapToDouble(flat -> parseToDouble(flat.getFloor()))
                     .average()
                     .orElse(0);
             case YEAR_OF_CONSTRUCTION -> flats.stream()
                     .filter(flat -> flat.getYearOfConstruction() != null)
-                    .mapToInt(flat -> parseYearOfConstruction(flat.getYearOfConstruction()))
+                    .mapToInt(flat -> parseToInt(flat.getYearOfConstruction()))
                     .average()
                     .orElse(0);
             case PRICE -> flats.stream()
                     .filter(flat -> flat.getPrice() != null)
-                    .mapToDouble(flat -> parsePrice(flat.getPrice()))
+                    .mapToDouble(flat -> parseToDouble(flat.getPrice()))
                     .average()
                     .orElse(0);
         };
     }
 
-    private double parseArea(String area) {
-        try {
-            area = area.substring(0, area.length() - 2);
-            return Double.parseDouble(area);
-        } catch (NumberFormatException e) {
-            return 0;
-        }
+    private double parseToDouble(String value) {
+        return Optional.ofNullable(value)
+                .map(v -> v.replaceAll("[^0-9.]", "")) // Usuwa znaki inne niż cyfry i kropka
+                .filter(v -> !v.isEmpty())
+                .map(Double::parseDouble)
+                .orElse(0.0);
     }
 
-    private double parseRooms(String rooms) {
-        try {
-            rooms = rooms.substring(0, 1);
-            return Double.parseDouble(rooms);
-        } catch (NumberFormatException e) {
-            return 0;
-        }
-    }
-
-    private double parseFloor(String floor) {
-        floor = floor.substring(0, 1);
-        try {
-            return Double.parseDouble(floor);
-        } catch (NumberFormatException e) {
-            return 0;
-        }
-    }
-
-    private int parseYearOfConstruction(String yearOfConstruction) {
-        try {
-            return Integer.parseInt(yearOfConstruction);
-        } catch (NumberFormatException e) {
-            return 0;
-        }
-    }
-
-    private double parsePrice(String price) {
-        try {
-            price = price.replaceAll(" ", "");
-            price = price.substring(0, price.length() - 2);
-            return Double.parseDouble(price);
-        } catch (NumberFormatException e) {
-            return 0;
-        }
+    private int parseToInt(String value) {
+        return Optional.ofNullable(value)
+                .map(v -> v.replaceAll("[^0-9]", "")) // Usuwa znaki inne niż cyfry
+                .filter(v -> !v.isEmpty())
+                .map(Integer::parseInt)
+                .orElse(0);
     }
 }

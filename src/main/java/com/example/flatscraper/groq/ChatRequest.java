@@ -1,6 +1,6 @@
 package com.example.flatscraper.groq;
 
-public record ChatReq(
+public record ChatRequest(
         String message
 ) {
 }

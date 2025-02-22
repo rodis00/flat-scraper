@@ -16,3 +16,10 @@ spring:
         options:
           model: ${OPENAI_MODEL}
           temperature: ${OPENAI_TEMPERATURE}
+
+application:
+  security:
+    jwt:
+      secret-key: ${JWT_SECRET_KEY}
+      expiration-time: ${JWT_EXPIRATION_TIME}
+      refresh-expiration-time: ${JWT_REFRESH_EXPIRATION_TIME}

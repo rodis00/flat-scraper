@@ -1,8 +1,8 @@
 package com.example.flatscraper.flat;
 
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/flats")
@@ -15,12 +15,15 @@ public class FlatController {
     }
 
     @GetMapping
-    public List<Flat> flats() {
-        return flatService.flats();
+    public ResponseEntity<Page<Flat>> flats(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(required = false) FieldName filterBy
+    ) {
+        return ResponseEntity.ok(flatService.flats(page, filterBy));
     }
 
     @PostMapping("/predict-price")
-    public double predictFlatPrice(@RequestBody FlatRequest flat) {
-        return flatService.predictFlatPrice(flat);
+    public ResponseEntity<Double> predictFlatPrice(@RequestBody FlatRequest flat) {
+        return ResponseEntity.ok(flatService.predictFlatPrice(flat));
     }
 }
