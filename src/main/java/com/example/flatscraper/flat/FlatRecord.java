@@ -20,9 +20,7 @@ public record FlatRecord (
     String yearOfConstruction,
     String elevator,
     String buildingType,
-    String safety,
     String buildingMaterial,
-    String windows,
     String equipment,
     String security,
     String media

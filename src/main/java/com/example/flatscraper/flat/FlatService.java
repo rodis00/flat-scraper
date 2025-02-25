@@ -153,9 +153,7 @@ public class FlatService {
         flat.setYearOfConstruction(parseToInt(record.yearOfConstruction()));
         flat.setElevator(record.elevator());
         flat.setBuildingType(record.buildingType());
-        flat.setSafety(record.safety());
         flat.setBuildingMaterial(record.buildingMaterial());
-        flat.setWindows(record.windows());
         flat.setEquipment(record.equipment());
         flat.setSecurity(record.security());
         flat.setMedia(record.media());

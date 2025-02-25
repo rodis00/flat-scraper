@@ -1,6 +1,5 @@
 package com.example.flatscraper.otodomScraper;
 
-import com.example.flatscraper.flat.Flat;
 import com.example.flatscraper.flat.FlatRecord;
 import com.example.flatscraper.flat.FlatService;
 import org.jsoup.Jsoup;
@@ -40,7 +39,7 @@ public class Scraper {
             List<String> flatLinks = getFlatLinksFromPage(pageUrl);
 
             List<FlatRecord> flats = new ArrayList<>();
-            for (String flatLink: flatLinks) {
+            for (String flatLink : flatLinks) {
                 FlatRecord flat = scrapeFlat(flatLink);
                 if (flat != null) {
                     flats.add(flat);
@@ -107,8 +106,6 @@ public class Scraper {
         String elevator = doc.selectXpath("//*[@id=\"__next\"]/div[1]/main/div[1]/div[1]/div[2]/div[3]/div[1]/div/div/div[3]/p[2]").text();
         String buildingType = doc.selectXpath("//*[@id=\"__next\"]/div[1]/main/div[1]/div[1]/div[2]/div[3]/div[1]/div/div/div[5]/p[2]").text();
         String buildingMaterial = doc.selectXpath("//*[@id=\"__next\"]/div[1]/main/div[1]/div[1]/div[2]/div[3]/div/div/div/div[7]/p[2]").text();
-        String windows = doc.selectXpath("//*[@id=\"__next\"]/div[1]/main/div[1]/div[1]/div[2]/div[3]/div[1]/div/div/div[7]/p[2]").text();
-        String safety = doc.selectXpath("//*[@id=\"__next\"]/div[1]/main/div[1]/div[1]/div[2]/div[3]/div[1]/div/div/div[9]/p[2]").text();
 
         String equipment = doc.selectXpath("//*[@id=\"__next\"]/div[1]/main/div[1]/div[1]/div[2]/div[3]/div[2]/div/div/div[1]/p[2]").text();
         String security = doc.selectXpath("//*[@id=\"__next\"]/div[1]/main/div[1]/div[1]/div[2]/div[3]/div[2]/div/div/div[3]/p[2]").text();
@@ -134,9 +131,7 @@ public class Scraper {
                 yearOfConstruction,
                 elevator,
                 buildingType,
-                safety,
                 buildingMaterial,
-                windows,
                 equipment,
                 security,
                 media

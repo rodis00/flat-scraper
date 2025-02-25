@@ -50,11 +50,7 @@ public class Flat {
 
     private String buildingType;
 
-    private String safety;
-
     private String buildingMaterial;
-
-    private String windows;
 
     private String equipment;
 
@@ -217,28 +213,12 @@ public class Flat {
         this.buildingType = buildingType;
     }
 
-    public String getSafety() {
-        return safety;
-    }
-
-    public void setSafety(String safety) {
-        this.safety = safety;
-    }
-
     public String getBuildingMaterial() {
         return buildingMaterial;
     }
 
     public void setBuildingMaterial(String buildingMaterial) {
         this.buildingMaterial = buildingMaterial;
-    }
-
-    public String getWindows() {
-        return windows;
-    }
-
-    public void setWindows(String windows) {
-        this.windows = windows;
     }
 
     public String getEquipment() {
