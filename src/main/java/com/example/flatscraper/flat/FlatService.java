@@ -34,13 +34,13 @@ public class FlatService {
         return flatRepository.existsByUrl(url);
     }
 
-    public Page<Flat> flats(int page, FieldName filterBy) {
-        Pageable pageable = PageRequest.of(page, 20, getSort(filterBy));
+    public Page<Flat> flats(int page, FieldName sortBy) {
+        Pageable pageable = PageRequest.of(page, 20, getSort(sortBy));
         return flatRepository.findAll(pageable);
     }
 
-    private Sort getSort(FieldName filterBy) {
-        return switch (filterBy) {
+    private Sort getSort(FieldName sortBy) {
+        return switch (sortBy) {
             case PRICE -> Sort.by(Sort.Direction.ASC, "price");
             case PRICE_PER_METER -> Sort.by(Sort.Direction.ASC, "pricePerMeter");
             case AREA -> Sort.by(Sort.Direction.ASC, "area");

@@ -17,9 +17,9 @@ public class FlatController {
     @GetMapping
     public ResponseEntity<Page<Flat>> flats(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(required = false) FieldName filterBy
+            @RequestParam(required = false) FieldName sort
     ) {
-        return ResponseEntity.ok(flatService.flats(page, filterBy));
+        return ResponseEntity.ok(flatService.flats(page, sort));
     }
 
     @PostMapping("/predict-price")
