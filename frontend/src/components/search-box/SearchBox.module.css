@@ -1,0 +1,25 @@
+.searchBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10rem;
+  width: 250px;
+}
+
+.searchBox,
+.searchInput {
+  background: rgb(247, 244, 244);
+}
+
+.searchBox i {
+  font-size: 2rem;
+}
+
+.searchInput {
+  padding: 1.3rem;
+  width: 180px;
+  height: 35px;
+  border-radius: 10rem 0 0 10rem;
+  border: none;
+  outline: none;
+}
