@@ -34,8 +34,16 @@ public class FlatService {
         return flatRepository.existsByUrl(url);
     }
 
-    public Page<Flat> flats(int page, FieldName sortBy) {
+    public Page<Flat> flats(
+            int page,
+            String address,
+            FieldName sortBy
+    ) {
         Pageable pageable = PageRequest.of(page, 20, getSort(sortBy));
+
+        if (address != null) {
+            return flatRepository.findAllByAddressContainsIgnoreCase(address, pageable);
+        }
         return flatRepository.findAll(pageable);
     }
 
