@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 10rem;
-  width: 250px;
+  width: 290px;
 }
 
 .searchBox,
@@ -17,7 +17,7 @@
 
 .searchInput {
   padding: 1.3rem;
-  width: 180px;
+  width: 80%;
   height: 35px;
   border-radius: 10rem 0 0 10rem;
   border: none;

@@ -26,3 +26,11 @@
   justify-content: space-evenly;
   list-style: none;
 }
+
+.noContent {
+  height: 350px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 2rem;
+  padding: 4rem;
+}

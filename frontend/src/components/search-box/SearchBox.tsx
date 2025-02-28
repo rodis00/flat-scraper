@@ -1,12 +1,13 @@
-import { JSX, useState } from "react";
+import { JSX } from "react";
 import styles from "./SearchBox.module.css";
 
-const SearchBox = (): JSX.Element => {
-  const [searchBoxValue, setSearchBoxValue] = useState("");
+interface SearchBoxProps {
+  setSearchBoxValue: (value: string) => void;
+}
 
+const SearchBox = ({ setSearchBoxValue }: SearchBoxProps): JSX.Element => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchBoxValue(e.target.value);
-    console.log(searchBoxValue);
   };
 
   return (
@@ -14,7 +15,7 @@ const SearchBox = (): JSX.Element => {
       <input
         className={styles.searchInput}
         type="text"
-        placeholder="Wyszukaj..."
+        placeholder="Wyszukaj po adresie..."
         onChange={handleChange}
       />
       <i className="bx bx-search-alt-2"></i>

@@ -7,17 +7,30 @@ import styles from "./Flats.module.css";
 const accessToken: string =
   "eyJhbGciOiJIUzI1NiJ9.eyJ0eXAiOiJBQ0NFU1MiLCJzdWIiOiJhZG1pbiIsImlhdCI6MTc0MDY3Mjc3OCwiZXhwIjoxNzQwNzU5MTc4fQ.ZWbfIXwGnwbnZF0cXWRFmZHYtkeJtxBItMw49Xlr5CA";
 
-const Flats = (): JSX.Element => {
-  const [flats, setFlats] = useState([]);
+interface FlatsProps {
+  searchBoxValue: string | null;
+}
+
+const Flats = ({ searchBoxValue }: FlatsProps): JSX.Element => {
+  const [flats, setFlats] = useState<FlatInterface[]>([]);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchFlats = async () => {
       try {
         let url = "http://localhost:8080/api/v1/flats";
+        const queryParams: string[] = [];
+
         if (selectedOption) {
-          url += `?sort=${selectedOption}`;
+          queryParams.push(`sort=${selectedOption}`);
         }
+        if (searchBoxValue) {
+          queryParams.push(`search=${searchBoxValue}`);
+        }
+        if (queryParams.length > 0) {
+          url += `?${queryParams.join("&")}`;
+        }
+
         const res = await fetch(url, {
           method: "GET",
           headers: {
@@ -33,7 +46,7 @@ const Flats = (): JSX.Element => {
     };
 
     fetchFlats();
-  }, [selectedOption]);
+  }, [selectedOption, searchBoxValue]);
 
   return (
     <div className={styles.container}>
@@ -46,11 +59,15 @@ const Flats = (): JSX.Element => {
       </div>
 
       <div className={styles.container__flatList}>
-        {flats.map((flat: FlatInterface, index: number) => (
-          <li key={`flat-${index}`}>
-            <Flat flat={flat} />
-          </li>
-        ))}
+        {flats.length > 0 ? (
+          flats.map((flat: FlatInterface, index: number) => (
+            <li key={`flat-${index}`}>
+              <Flat flat={flat} />
+            </li>
+          ))
+        ) : (
+          <div className={styles.noContent}>Brak wyników.</div>
+        )}
       </div>
     </div>
   );
