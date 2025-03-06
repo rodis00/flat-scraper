@@ -5,7 +5,7 @@ import SortOptions from "../sort/SortOptions";
 import styles from "./Flats.module.css";
 
 const accessToken: string =
-  "eyJhbGciOiJIUzI1NiJ9.eyJ0eXAiOiJBQ0NFU1MiLCJzdWIiOiJhZG1pbiIsImlhdCI6MTc0MDY3Mjc3OCwiZXhwIjoxNzQwNzU5MTc4fQ.ZWbfIXwGnwbnZF0cXWRFmZHYtkeJtxBItMw49Xlr5CA";
+  "eyJhbGciOiJIUzI1NiJ9.eyJ0eXAiOiJBQ0NFU1MiLCJzdWIiOiJhZG1pbiIsImlhdCI6MTc0MTI0NjA0NCwiZXhwIjoxNzQxMzMyNDQ0fQ.lOHn-Ee6y2xfnu1E_avD5QLw3lbO9ve1DN8JoZyrW9E";
 
 interface FlatsProps {
   searchBoxValue: string | null;

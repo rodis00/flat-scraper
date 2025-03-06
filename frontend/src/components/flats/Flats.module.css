@@ -20,7 +20,7 @@
 
 .container__flatList {
   margin: auto;
-  width: 85%;
+  width: 95%;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;

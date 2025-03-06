@@ -8,6 +8,14 @@ interface FlatProps {
 }
 
 const Flat = ({ flat }: FlatProps): JSX.Element => {
+  const shorterAddress = (address: string): string => {
+    const targetLength: number = 55;
+    if (address.length >= targetLength) {
+      return address.substring(0, targetLength) + "...";
+    }
+    return address;
+  };
+
   return (
     <div className={styles.flatContainer}>
       <div className={styles.image}>
@@ -24,7 +32,7 @@ const Flat = ({ flat }: FlatProps): JSX.Element => {
             )}`}
             target="_blank"
           >
-            {flat.address}
+            <span>{shorterAddress(flat.address)}</span>
           </a>
         </div>
         <div className={styles.area}>
