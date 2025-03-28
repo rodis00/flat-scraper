@@ -1,6 +1,7 @@
 package com.example.flatscraper.config;
 
 import com.example.flatscraper.config.jwt.JwtAuthFilter;
+import com.example.flatscraper.service.MyUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -25,14 +26,20 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
-    private final CustomUserDetailsService customUserDetailsService;
+    private final MyUserDetailsService myUserDetailsService;
+
+    private final String[] whiteList = {
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/api/v1/auth/*",
+    };
 
     public SecurityConfig(
             JwtAuthFilter jwtAuthFilter,
-            CustomUserDetailsService customUserDetailsService
+            MyUserDetailsService myUserDetailsService
     ) {
         this.jwtAuthFilter = jwtAuthFilter;
-        this.customUserDetailsService = customUserDetailsService;
+        this.myUserDetailsService = myUserDetailsService;
     }
 
     @Bean
@@ -43,7 +50,7 @@ public class SecurityConfig {
                         .configurationSource(request -> corsConfiguration())
                 )
                 .authorizeHttpRequests(req -> req
-                        .requestMatchers("api/v1/auth/*").permitAll()
+                        .requestMatchers(whiteList).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
@@ -57,7 +64,7 @@ public class SecurityConfig {
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(customUserDetailsService);
+        authProvider.setUserDetailsService(myUserDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
