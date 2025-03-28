@@ -16,6 +16,10 @@ spring:
         options:
           model: ${OPENAI_MODEL}
           temperature: ${OPENAI_TEMPERATURE}
+springdoc:
+  swagger-ui:
+    use-root-path: true
+    persist-authorization: true
 
 application:
   security:
