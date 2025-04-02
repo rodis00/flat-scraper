@@ -1,0 +1,76 @@
+<div class="container-fluid">
+  <div class="row no-gutter">
+    <div class="col-md-6 d-none d-md-flex bg-image"></div>
+
+    <div class="col-md-6 bg-light">
+      <div class="register d-flex align-items-center py-5">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-10 col-xl-7 mx-auto">
+              <h3 class="display-4 mb-4">Register</h3>
+              <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                <div class="form-group mb-3">
+                  <input
+                    id="inputUsername"
+                    type="text"
+                    placeholder="Username"
+                    formControlName="username"
+                    class="form-control rounded-pill border-0 shadow-sm p-3"
+                  />
+                  @if (registerForm.get('username')?.errors &&
+                  registerForm.get('username')?.touched) {
+                  <div class="text-danger mt-1">
+                    {{ getErrorMessage("username") }}
+                  </div>
+                  }
+                </div>
+                <div class="form-group mb-3">
+                  <input
+                    id="inputEmail"
+                    type="email"
+                    placeholder="Email address"
+                    formControlName="email"
+                    class="form-control rounded-pill border-0 shadow-sm p-3"
+                  />
+                  @if (registerForm.get('email')?.errors &&
+                  registerForm.get('email')?.touched) {
+                  <div class="text-danger mt-1">
+                    {{ getErrorMessage("email") }}
+                  </div>
+                  }
+                </div>
+                <div class="form-group mb-3">
+                  <input
+                    id="inputPassword"
+                    type="password"
+                    placeholder="Password"
+                    formControlName="password"
+                    class="form-control rounded-pill border-0 shadow-sm p-3"
+                  />
+                  @if (registerForm.get('password')?.errors &&
+                  registerForm.get('password')?.touched) {
+                  <div class="text-danger mt-1">
+                    {{ getErrorMessage("password") }}
+                  </div>
+                  }
+                </div>
+                <div class="form-group mb-3 d-flex justify-content-end">
+                  <a routerLink="/auth/login" class="border-0"
+                    >Already have an account? Login</a
+                  >
+                </div>
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm p-2"
+                  [disabled]="!registerForm.valid"
+                >
+                  Register
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

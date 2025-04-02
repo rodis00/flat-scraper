@@ -1,0 +1,19 @@
+.login,
+.image {
+  min-height: 100vh;
+}
+
+.bg-image {
+  background-image: url("/assets/images/home.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.btn {
+  font-size: 1.2rem;
+  width: 9rem;
+}
+
+.form-control {
+  font-size: 1.2rem;
+}

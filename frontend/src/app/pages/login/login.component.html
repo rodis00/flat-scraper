@@ -1,0 +1,61 @@
+<div class="container-fluid">
+  <div class="row no-gutter">
+    <div class="col-md-6 d-none d-md-flex bg-image"></div>
+
+    <div class="col-md-6 bg-light">
+      <div class="login d-flex align-items-center py-5">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-10 col-xl-7 mx-auto">
+              <h3 class="display-4 mb-4">Login</h3>
+              <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                <div class="form-group mb-3">
+                  <input
+                    id="inputUsername"
+                    type="text"
+                    placeholder="Username"
+                    formControlName="username"
+                    class="form-control rounded-pill border-0 shadow-sm p-3"
+                  />
+                  @if (loginForm.get('username')?.hasError('required') &&
+                  loginForm.get('username')?.touched) {
+                  <div class="text-danger mt-1">Username is required</div>
+                  } @if (usernameError != null) {
+                  <div class="text-danger mt-1">{{ usernameError }}</div>
+                  }
+                </div>
+                <div class="form-group mb-3">
+                  <input
+                    id="inputPassword"
+                    type="password"
+                    placeholder="Password"
+                    formControlName="password"
+                    class="form-control rounded-pill border-0 shadow-sm p-3"
+                  />
+                  @if (loginForm.get('password')?.hasError('required') &&
+                  loginForm.get('password')?.touched) {
+                  <div class="text-danger mt-1">Password is required</div>
+                  } @if (passwordError != null) {
+                  <div class="text-danger mt-1">{{ passwordError }}</div>
+                  }
+                </div>
+                <div class="form-group mb-3 d-flex justify-content-end">
+                  <a routerLink="/auth/register" class="border-0"
+                    >Don't have an account? Register</a
+                  >
+                </div>
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm p-2"
+                  [disabled]="!loginForm.valid"
+                >
+                  Login
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
