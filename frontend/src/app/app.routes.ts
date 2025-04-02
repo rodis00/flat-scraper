@@ -7,8 +7,12 @@ import { RegisterComponent } from './pages/register/register.component';
 
 export const routes: Routes = [
   {
+    path: '**', // redirect for unknown paths
+    redirectTo: '',
+  },
+  {
     path: '',
-    title: 'Home',
+    title: 'Flat Scraper',
     component: HomeComponent,
     canActivate: [authGuard],
   },
