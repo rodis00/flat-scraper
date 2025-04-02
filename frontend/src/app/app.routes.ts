@@ -7,10 +7,6 @@ import { RegisterComponent } from './pages/register/register.component';
 
 export const routes: Routes = [
   {
-    path: '**', // redirect for unknown paths
-    redirectTo: '',
-  },
-  {
     path: '',
     title: 'Flat Scraper',
     component: HomeComponent,
@@ -27,5 +23,9 @@ export const routes: Routes = [
     title: 'Register',
     component: RegisterComponent,
     canActivate: [isLoggedInGuard],
+  },
+  {
+    path: '**', // redirect for unknow paths
+    redirectTo: '',
   },
 ];
