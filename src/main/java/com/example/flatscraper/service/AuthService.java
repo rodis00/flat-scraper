@@ -4,6 +4,7 @@ import com.example.flatscraper.entity.UserEntity;
 import com.example.flatscraper.exception.*;
 import com.example.flatscraper.record.*;
 import com.example.flatscraper.repository.UserRepository;
+import jakarta.servlet.http.Cookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -47,8 +48,9 @@ public class AuthService {
 
         String jwtToken = jwtService.generateToken(savedUser.getUsername());
         String refreshToken = jwtService.generateRefreshToken(savedUser.getUsername());
+        Cookie cookie = jwtService.crateCookie(refreshToken);
 
-        return new AuthResponseDto(jwtToken, refreshToken);
+        return new AuthResponseDto(jwtToken, cookie);
     }
 
     public AuthResponseDto authenticate(AuthRequestDto request) {
@@ -68,8 +70,9 @@ public class AuthService {
 
         String jwtToken = jwtService.generateToken(user.getUsername());
         String refreshToken = jwtService.generateRefreshToken(user.getUsername());
+        Cookie cookie = jwtService.crateCookie(refreshToken);
 
-        return new AuthResponseDto(jwtToken, refreshToken);
+        return new AuthResponseDto(jwtToken, cookie);
     }
 
     public RefreshTokenResponseDto refreshToken(
