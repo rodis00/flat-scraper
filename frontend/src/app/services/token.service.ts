@@ -10,4 +10,7 @@ export class TokenService {
   getToken(): string | null {
     return localStorage.getItem('accessToken');
   }
+  removeToken(): void {
+    localStorage.removeItem('accessToken');
+  }
 }
