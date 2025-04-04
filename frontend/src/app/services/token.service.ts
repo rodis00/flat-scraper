@@ -13,4 +13,13 @@ export class TokenService {
   removeToken(): void {
     localStorage.removeItem('accessToken');
   }
+
+  extractPayloadFromToken() {
+    const token = this.getToken();
+    let payload = null;
+    if (token) {
+      payload = JSON.parse(atob(token.split('.')[1]));
+    }
+    return payload;
+  }
 }

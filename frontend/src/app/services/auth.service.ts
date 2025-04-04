@@ -27,4 +27,16 @@ export class AuthService {
   }
 
   register(RegisterData: RegisterData): void {}
+
+  isLoggedIn(): boolean {
+    return this.tokenService.getToken() !== null;
+  }
+
+  getUsername(): string {
+    const payload = this.tokenService.extractPayloadFromToken();
+    if (payload) {
+      return payload.sub;
+    }
+    return 'user';
+  }
 }

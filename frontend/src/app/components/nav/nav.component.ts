@@ -9,6 +9,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class NavComponent {
   authService: AuthService = inject(AuthService);
+  username: string = this.authService.getUsername();
 
   handleClick() {
     this.authService.logout();
