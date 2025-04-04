@@ -44,7 +44,7 @@ public class FlatService {
             String address,
             FieldName sortBy
     ) {
-        Pageable pageable = PageRequest.of(page, 20, getSort(sortBy));
+        Pageable pageable = PageRequest.of(page, 15, getSort(sortBy));
 
         if (address != null) {
             return flatRepository.findAllByAddressContainsIgnoreCase(address, pageable);
