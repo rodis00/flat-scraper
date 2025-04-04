@@ -1,0 +1,10 @@
+.flat-img {
+  height: 300px;
+  object-fit: cover;
+}
+
+.equal-height-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}

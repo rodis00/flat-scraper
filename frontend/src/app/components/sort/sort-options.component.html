@@ -1,0 +1,11 @@
+<div class="mb-4 mt-5 d-flex justify-content-center">
+  <select class="form-select w-auto" (change)="onSortChange($event)">
+    <option value="" disabled selected>Sortuj według</option>
+    <option value="PRICE">Cena</option>
+    <option value="PRICE_PER_METER">Cena za metr</option>
+    <option value="AREA">Powierzchnia</option>
+    <option value="ROOMS">Liczba pokoi</option>
+    <option value="FLOOR">Piętro</option>
+    <option value="YEAR_OF_CONSTRUCTION">Rok budowy</option>
+  </select>
+</div>

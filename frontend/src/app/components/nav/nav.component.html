@@ -28,10 +28,8 @@
             type="search"
             placeholder="Search..."
             aria-label="Search"
+            (input)="searchBoxValue.set($any($event.target).value)"
           />
-          <button class="btn btn-outline-success rounded-end" type="submit">
-            Search
-          </button>
         </form>
       </ul>
       <ul class="navbar-nav me-3">

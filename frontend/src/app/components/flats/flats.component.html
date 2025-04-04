@@ -1,0 +1,24 @@
+<div class="container mt-5">
+  <div class="text-center mb-5">
+    <h2 class="display-5">Mieszkania na sprzedaż w Olsztynie</h2>
+
+    <!-- Sortowanie -->
+    <app-sort-options
+      [selectedOption]="selectedOption"
+      (sortChanged)="onSortChange($event)"
+    >
+    </app-sort-options>
+  </div>
+
+  <div class="d-flex flex-wrap justify-content-evenly">
+    @if(flats.length > 0) { @for (flat of flats; track flat.id) {
+    <div class="mb-4">
+      <app-flat [flat]="flat"></app-flat>
+    </div>
+    } } @else {
+    <div class="text-center p-5">
+      <p class="fs-3 fw-semibold">Brak wyników.</p>
+    </div>
+    }
+  </div>
+</div>
