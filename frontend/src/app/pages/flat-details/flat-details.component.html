@@ -1,0 +1,143 @@
+<app-nav></app-nav>
+
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-body">
+      <h3 class="card-title">
+        Typ ogłoszenia: {{ flat.advertiserType | titlecase }}
+      </h3>
+      <h6 class="card-subtitle">{{ flat.formOfOwnership }}</h6>
+      <div class="row">
+        <div class="col-lg-5 col-md-7 col-sm-12">
+          <div class="white-box text-center">
+            <img [src]="flat.imageUrl" class="img-fluid img-size" />
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-5 col-sm-12">
+          <h4 class="box-title mt-4">
+            <small>wskaźnik polecenia</small>
+            <span
+              [class]="referralPercent > 0 ? 'text-success' : 'text-danger'"
+            >
+              ({{ referralPercent | number : "1.0-0" }}%)</span
+            >
+          </h4>
+          <h2 class="mt-4">{{ flat.price | number }} zł</h2>
+          <h3>{{ flat.pricePerMeter | number }} zł/m<sup>2</sup></h3>
+          <p class="card-text d-flex align-items-center mb-2 fs-5 link">
+            <i class="bx bx-map me-2 fs-3"></i>
+            <a
+              [href]="'https://www.google.com/maps/search/?q=' + flat.address"
+              target="_blank"
+              class="text-decoration-none text-dark"
+            >
+              {{ flat.address }}
+            </a>
+          </p>
+          <p class="card-text d-flex align-items-center mb-2 fs-5">
+            <i class="bx bx-area me-2 fs-3"></i>
+            {{ flat.area }} m²
+          </p>
+          <p class="card-text d-flex align-items-center mb-2 fs-5">
+            <i class="bx bx-door-open me-1 fs-3"></i>
+            {{ flat.rooms }} pokoje
+          </p>
+          <p class="card-text d-flex align-items-center fs-5">
+            <i class="bx bx-building me-2 fs-3"></i>
+            {{ flat.floor > 0 ? flat.floor + " piętro" : "parter" }}
+          </p>
+          <h5>Wycena algorytmu</h5>
+          <p class="card-text d-flex align-items-center fs-5">
+            <i class="bx bx-network-chart me-2 fs-3"></i>
+            <span
+              [class]="
+                suggestedPrice < flat.price
+                  ? 'fs-3 text-success'
+                  : 'fs-3 text-danger'
+              "
+            >
+              {{ suggestedPrice | number }} zł</span
+            >
+          </p>
+          <p class="card-text d-flex align-items-center mb-2">
+            <a
+              [href]="flat.url"
+              target="_blank"
+              class="btn btn-primary btn-rounded d-flex align-items-center"
+            >
+              <i class="bx bx-link fs-4"></i>
+              Link do ogłoszenia
+            </a>
+          </p>
+
+          @if (flat.additionalInfo !== "brak informacji") {
+          <h3 class="box-title mt-5">Najważniejsze informacje</h3>
+          <ul class="list-unstyled">
+            @if (extraElements.length > 0) { @for(el of extraElements; track el)
+            {
+            <li><i class="bx bx-check text-success"></i>{{ el }}</li>
+            } }
+          </ul>
+          }
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12">
+          <h3 class="box-title mt-5">Szczegóły</h3>
+          <div class="table-responsive">
+            <table class="table table-striped table-product">
+              <tbody>
+                <tr>
+                  <td width="390">Dostępne od</td>
+                  <td>{{ flat.availableFrom }}</td>
+                </tr>
+                <tr>
+                  <td>Materiał</td>
+                  <td>{{ flat.buildingMaterial }}</td>
+                </tr>
+                <tr>
+                  <td>Typ budynku</td>
+                  <td>{{ flat.buildingType }}</td>
+                </tr>
+                <tr>
+                  <td>Ogrzewanie</td>
+                  <td>{{ flat.heating }}</td>
+                </tr>
+                <tr>
+                  <td>Rynek</td>
+                  <td>{{ flat.martket }}</td>
+                </tr>
+                <tr>
+                  <td>Rok budowy</td>
+                  <td>{{ flat.yearOfConstruction }}</td>
+                </tr>
+                <tr>
+                  <td>Czynsz</td>
+                  <td>{{ flat.rent }} zł</td>
+                </tr>
+                <tr>
+                  <td>Winda</td>
+                  <td>{{ flat.elevator }}</td>
+                </tr>
+                <tr>
+                  <td>Stan wykończenia</td>
+                  <td>{{ flat.stateOfFinishing }}</td>
+                </tr>
+                <tr>
+                  <td>Media</td>
+                  <td>{{ flat.media }}</td>
+                </tr>
+                <tr>
+                  <td>Bezpieczeństwo</td>
+                  <td>{{ flat.security }}</td>
+                </tr>
+                <tr>
+                  <td>Wyposażenie</td>
+                  <td>{{ flat.equipment }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
