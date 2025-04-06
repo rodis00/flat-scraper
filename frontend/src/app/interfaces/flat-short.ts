@@ -1,4 +1,4 @@
-export interface FlatInterface {
+export interface IFlatShort {
   id: number;
   imageUrl: string;
   price: number;

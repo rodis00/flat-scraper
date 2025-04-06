@@ -1,0 +1,26 @@
+export interface IFlatFull {
+  id: number;
+  url: string;
+  imageUrl: string;
+  price: number;
+  pricePerMeter: number;
+  address: string;
+  area: number;
+  rooms: number;
+  heating: string;
+  floor: number;
+  rent: number;
+  stateOfFinishing: string;
+  martket: string;
+  formOfOwnership: string;
+  availableFrom: string;
+  advertiserType: string;
+  additionalInfo: string;
+  yearOfConstruction: number;
+  elevator: string;
+  buildingType: string;
+  buildingMaterial: string;
+  equipment: string;
+  security: string;
+  media: string;
+}
