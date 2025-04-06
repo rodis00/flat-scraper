@@ -27,6 +27,11 @@ public class FlatController {
         return ResponseEntity.ok(flatService.flats(page, address, sort));
     }
 
+    @GetMapping("/flat/{id}")
+    public ResponseEntity<FlatEntity> flat(@PathVariable int id) {
+        return ResponseEntity.ok(flatService.findFlatById(id));
+    }
+
     @PostMapping("/predict-price")
     public ResponseEntity<Double> predictFlatPrice(@RequestBody FlatRequestDto flat) {
         return ResponseEntity.ok(flatService.predictFlatPrice(flat));

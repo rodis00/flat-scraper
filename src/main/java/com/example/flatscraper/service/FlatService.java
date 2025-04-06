@@ -197,4 +197,8 @@ public class FlatService {
             return 0;
         }
     }
+
+    public FlatEntity findFlatById(int id) {
+        return flatRepository.findById(id).orElse(null);
+    }
 }
