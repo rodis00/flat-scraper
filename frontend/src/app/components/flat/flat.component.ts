@@ -1,6 +1,6 @@
 import { DecimalPipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { FlatInterface } from '../../interfaces/flat';
+import { IFlatShort } from '../../interfaces/flat-short';
 
 @Component({
   selector: 'app-flat',
@@ -9,5 +9,5 @@ import { FlatInterface } from '../../interfaces/flat';
   imports: [DecimalPipe],
 })
 export default class FlatComponent {
-  @Input() flat!: FlatInterface;
+  @Input() flat!: IFlatShort;
 }

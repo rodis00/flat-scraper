@@ -1,24 +1,25 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, effect, Input, Signal } from '@angular/core';
-import { FlatInterface } from '../../interfaces/flat';
-import { TokenService } from '../../services/token.service';
+import { HttpClient } from '@angular/common/http';
+import { Component, effect, inject, Input, Signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { IFlatShort } from '../../interfaces/flat-short';
+import { FlatService } from '../../services/flat.service';
 import FlatComponent from '../flat/flat.component';
 import { SortOptionsComponent } from '../sort/sort-options.component';
 
 @Component({
   selector: 'app-flats',
   templateUrl: './flats.component.html',
-  imports: [FlatComponent, SortOptionsComponent],
+  imports: [FlatComponent, SortOptionsComponent, RouterLink],
 })
 export class FlatsComponent {
-  flats: FlatInterface[] = [];
+  httpClient: HttpClient = inject(HttpClient);
+  flatService: FlatService = inject(FlatService);
+
+  flats: IFlatShort[] = [];
   selectedOption: string | null = null;
   @Input() searchBoxValue!: Signal<string>;
 
-  accessToken: string | null;
-
-  constructor(private http: HttpClient, private tokenService: TokenService) {
-    this.accessToken = tokenService.getToken();
+  constructor() {
     effect(() => {
       this.onSearchChange();
     });
@@ -26,8 +27,7 @@ export class FlatsComponent {
     console.log(this.flats);
   }
 
-  fetchFlats() {
-    let url = 'http://localhost:8080/api/v1/flats';
+  fetchFlats(): void {
     const queryParams: string[] = [];
 
     if (this.selectedOption) {
@@ -36,15 +36,8 @@ export class FlatsComponent {
     if (this.searchBoxValue) {
       queryParams.push(`search=${this.searchBoxValue()}`);
     }
-    if (queryParams.length > 0) {
-      url += `?${queryParams.join('&')}`;
-    }
 
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.accessToken}`,
-    });
-
-    this.http.get<any>(url, { headers }).subscribe({
+    this.flatService.getFlats(queryParams).subscribe({
       next: (data) => {
         console.log(data);
         this.flats = data.content;

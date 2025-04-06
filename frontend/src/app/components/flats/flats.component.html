@@ -13,7 +13,9 @@
   <div class="d-flex flex-wrap justify-content-evenly">
     @if(flats.length > 0) { @for (flat of flats; track flat.id) {
     <div class="mb-4">
-      <app-flat [flat]="flat"></app-flat>
+      <a class="text-decoration-none" routerLink="flats/flat/{{ flat.id }}">
+        <app-flat [flat]="flat"></app-flat
+      ></a>
     </div>
     } } @else {
     <div class="text-center p-5">
