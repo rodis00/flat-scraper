@@ -23,13 +23,18 @@
           >
         </li>
         <form class="d-flex ms-4" role="search">
-          <input
-            class="form-control me-2"
-            type="search"
-            placeholder="Search..."
-            aria-label="Search"
-            (input)="searchBoxValue.set($any($event.target).value)"
-          />
+          <div class="input-group">
+            <span class="input-group-text bg-white border-end-0">
+              <i class="bx bx-search fs-4"></i>
+            </span>
+            <input
+              type="search"
+              class="form-control border-start-0"
+              placeholder="Search..."
+              aria-label="Search"
+              (input)="searchBoxValue.set($any($event.target).value)"
+            />
+          </div>
         </form>
       </ul>
       <ul class="navbar-nav me-3">
