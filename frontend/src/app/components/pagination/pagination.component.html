@@ -1,0 +1,22 @@
+<nav
+  class="d-flex align-items-center justify-content-center gap-3 mb-3"
+  aria-label="Paginacja"
+>
+  <ul class="pagination mb-0">
+    <li [class]="firstPage ? 'page-item disabled' : 'page-item'">
+      <button (click)="decreasePage()" class="page-link">Previous</button>
+    </li>
+
+    <li class="page-item active" aria-current="page">
+      <span class="page-link">{{ currPage + 1 }}</span>
+    </li>
+
+    <li [class]="lastPage ? 'page-item disabled' : 'page-item'">
+      <button (click)="increasePage()" class="page-link">Next</button>
+    </li>
+  </ul>
+
+  <div class="ms-3">
+    <span class="text-muted">Ilość: {{ numberOfElements }}</span>
+  </div>
+</nav>

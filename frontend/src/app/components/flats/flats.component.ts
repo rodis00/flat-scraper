@@ -4,12 +4,18 @@ import { RouterLink } from '@angular/router';
 import { IFlatShort } from '../../interfaces/flat-short';
 import { FlatService } from '../../services/flat.service';
 import FlatComponent from '../flat/flat.component';
+import { PaginationComponent } from '../pagination/pagination.component';
 import { SortOptionsComponent } from '../sort/sort-options.component';
 
 @Component({
   selector: 'app-flats',
   templateUrl: './flats.component.html',
-  imports: [FlatComponent, SortOptionsComponent, RouterLink],
+  imports: [
+    FlatComponent,
+    SortOptionsComponent,
+    RouterLink,
+    PaginationComponent,
+  ],
 })
 export class FlatsComponent {
   httpClient: HttpClient = inject(HttpClient);
@@ -17,7 +23,14 @@ export class FlatsComponent {
 
   flats: IFlatShort[] = [];
   selectedOption: string | null = null;
+
   @Input() searchBoxValue!: Signal<string>;
+
+  pageNumber!: number;
+  numberOfElements!: number;
+
+  firstPage!: boolean;
+  lastPage!: boolean;
 
   constructor() {
     effect(() => {
@@ -36,11 +49,17 @@ export class FlatsComponent {
     if (this.searchBoxValue) {
       queryParams.push(`search=${this.searchBoxValue()}`);
     }
+    if (this.pageNumber) {
+      queryParams.push(`page=${this.pageNumber}`);
+    }
 
     this.flatService.getFlats(queryParams).subscribe({
       next: (data) => {
         console.log(data);
         this.flats = data.content;
+        this.firstPage = data.first;
+        this.lastPage = data.last;
+        this.numberOfElements = data.numberOfElements;
       },
       error: (error) => console.error(error),
     });
@@ -52,6 +71,11 @@ export class FlatsComponent {
 
   onSortChange(selectedOption: string) {
     this.selectedOption = selectedOption;
+    this.fetchFlats();
+  }
+
+  setPageNumber(page: number) {
+    this.pageNumber = page;
     this.fetchFlats();
   }
 }

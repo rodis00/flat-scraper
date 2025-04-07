@@ -10,17 +10,27 @@
     </app-sort-options>
   </div>
 
+  @if (flats.length > 0) {
   <div class="d-flex flex-wrap justify-content-evenly">
-    @if(flats.length > 0) { @for (flat of flats; track flat.id) {
+    @for (flat of flats; track flat.id) {
     <div class="mb-4">
       <a class="text-decoration-none" routerLink="flats/flat/{{ flat.id }}">
-        <app-flat [flat]="flat"></app-flat
-      ></a>
-    </div>
-    } } @else {
-    <div class="text-center p-5">
-      <p class="fs-3 fw-semibold">Brak wyników.</p>
+        <app-flat [flat]="flat"></app-flat>
+      </a>
     </div>
     }
   </div>
+  <div class="d-flex justify-content-center mt-4">
+    <app-pagination
+      [firstPage]="firstPage"
+      [lastPage]="lastPage"
+      [numberOfElements]="numberOfElements"
+      (pageNumberEvent)="setPageNumber($event)"
+    ></app-pagination>
+  </div>
+  } @else {
+  <div class="text-center p-5">
+    <p class="fs-3 fw-semibold">Brak wyników.</p>
+  </div>
+  }
 </div>
