@@ -147,6 +147,7 @@ public class FlatService {
 
     private FlatEntity cleanFlatData(FlatDto record) {
         FlatEntity flatEntity = new FlatEntity();
+        flatEntity.setTitle(record.title());
         flatEntity.setUrl(record.url());
         flatEntity.setImageUrl(record.imageUrl());
         flatEntity.setPrice(parseToDouble(record.price()));

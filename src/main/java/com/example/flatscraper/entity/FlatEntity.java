@@ -6,11 +6,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "flat_")
+@Table(name = "flats")
 public class FlatEntity {
     @Id
     @GeneratedValue
     private Integer id;
+
+    private String title;
 
     private String url;
 
@@ -251,5 +253,13 @@ public class FlatEntity {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

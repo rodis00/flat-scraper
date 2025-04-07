@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Table(name = "user_")
+@Table(name = "users")
 public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue
