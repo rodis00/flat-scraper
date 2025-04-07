@@ -1,5 +1,6 @@
 export interface IFlatFull {
   id: number;
+  title: string;
   url: string;
   imageUrl: string;
   price: number;
