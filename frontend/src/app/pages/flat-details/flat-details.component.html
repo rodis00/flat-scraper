@@ -19,17 +19,19 @@
             <span
               [class]="referralPercent > 0 ? 'text-success' : 'text-danger'"
             >
-              ({{ referralPercent | number : "1.0-0" }}%)</span
+              ({{ referralPercent | number : "1.0-2" : "pl" }}%)</span
             >
           </h4>
-          <h2 class="mt-4">{{ flat.price | number }} zł</h2>
-          <h3>{{ flat.pricePerMeter | number }} zł/m<sup>2</sup></h3>
+          <h2 class="mt-4">{{ flat.price | number : "1.0-0" : "pl" }} zł</h2>
+          <h3>
+            {{ flat.pricePerMeter | number : "1.0-0" : "pl" }} zł/m<sup>2</sup>
+          </h3>
           <p class="card-text d-flex align-items-center mb-2 fs-5 link">
             <i class="bx bx-map me-2 fs-3"></i>
             <a
               [href]="'https://www.google.com/maps/search/?q=' + flat.address"
               target="_blank"
-              class="text-decoration-none text-dark"
+              class="text-decoration-none text-dark lh-sm"
             >
               {{ flat.address }}
             </a>
@@ -56,7 +58,7 @@
                   : 'fs-3 text-danger'
               "
             >
-              {{ suggestedPrice | number }} zł</span
+              {{ suggestedPrice | number : "1.0-0" : "pl" }} zł</span
             >
           </p>
           <p class="card-text d-flex align-items-center mb-2">
@@ -111,7 +113,7 @@
                 </tr>
                 <tr>
                   <td>Czynsz</td>
-                  <td>{{ flat.rent }} zł</td>
+                  <td>{{ flat.rent | number : "1.0-0" : "pl" }} zł</td>
                 </tr>
                 <tr>
                   <td>Winda</td>
