@@ -4,6 +4,8 @@ export interface IFlatFull {
   url: string;
   imageUrl: string;
   price: number;
+  recommendedPrice: number;
+  referralPercent: number;
   pricePerMeter: number;
   address: string;
   area: number;
