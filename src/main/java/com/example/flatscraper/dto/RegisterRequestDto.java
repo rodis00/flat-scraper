@@ -1,4 +1,4 @@
-package com.example.flatscraper.record;
+package com.example.flatscraper.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

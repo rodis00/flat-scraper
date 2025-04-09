@@ -1,4 +1,4 @@
-package com.example.flatscraper.record;
+package com.example.flatscraper.dto;
 
 public record ChatRequestDto(
         String message

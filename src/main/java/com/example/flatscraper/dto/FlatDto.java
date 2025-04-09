@@ -1,4 +1,4 @@
-package com.example.flatscraper.record;
+package com.example.flatscraper.dto;
 
 import com.example.flatscraper.entity.FlatEntity;
 
@@ -8,6 +8,8 @@ public record FlatDto(
         String url,
         String imageUrl,
         Double price,
+        Double recommendedPrice,
+        Double referralPercent,
         Double pricePerMeter,
         String address,
         Double area,
@@ -29,13 +31,19 @@ public record FlatDto(
         String security,
         String media
 ) {
-    public static FlatDto toFlatDto(FlatEntity flat) {
+    public static FlatDto toFlatDto(
+            FlatEntity flat,
+            Double recommendedPrice,
+            Double referralPercent
+    ) {
         return new FlatDto(
                 flat.getId(),
                 flat.getTitle(),
                 flat.getUrl(),
                 flat.getImageUrl(),
                 flat.getPrice(),
+                recommendedPrice,
+                referralPercent,
                 flat.getPricePerMeter(),
                 flat.getAddress(),
                 flat.getArea(),
