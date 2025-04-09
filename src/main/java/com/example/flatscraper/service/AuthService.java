@@ -2,7 +2,7 @@ package com.example.flatscraper.service;
 
 import com.example.flatscraper.entity.UserEntity;
 import com.example.flatscraper.exception.*;
-import com.example.flatscraper.record.*;
+import com.example.flatscraper.dto.*;
 import com.example.flatscraper.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -4,7 +4,7 @@ import com.example.flatscraper.entity.UserEntity;
 import com.example.flatscraper.exception.EntityNotFoundException;
 import com.example.flatscraper.exception.UserAlreadyExistsException;
 import com.example.flatscraper.exception.UsernameIsTakenException;
-import com.example.flatscraper.record.UserDto;
+import com.example.flatscraper.dto.UserDto;
 import com.example.flatscraper.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
