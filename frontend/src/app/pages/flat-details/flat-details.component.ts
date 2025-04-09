@@ -18,9 +18,6 @@ export class FlatDetailsComponent {
   flat!: IFlatFull;
   extraElements: string[] = [];
 
-  referralPercent: number = 0;
-  suggestedPrice: number = 0;
-
   constructor() {
     this.getFlatById();
   }
@@ -31,7 +28,6 @@ export class FlatDetailsComponent {
       next: (flat: IFlatFull) => {
         this.flat = flat;
         this.extraElements = this.getExtraElements(this.flat);
-        this.predictPrice();
       },
       error: (error: any) => {
         console.error('Error fetching flat:', error);
@@ -41,29 +37,8 @@ export class FlatDetailsComponent {
 
   getExtraElements(flat: IFlatFull): string[] {
     if (flat.additionalInfo) {
-      console.log(flat.additionalInfo.split(' '));
       return flat.additionalInfo.split(' ');
     }
     return [];
-  }
-
-  predictPrice(): void {
-    this.flatService.predictPrice(this.flat).subscribe({
-      next: (response: number) => {
-        this.suggestedPrice = response;
-        this.calculateReferralPercent();
-      },
-      error: (error: any) => {
-        console.error('Error predicting price:', error);
-      },
-    });
-  }
-
-  calculateReferralPercent(): void {
-    const originalPrice = this.flat.price;
-    const suggestedPrice = this.suggestedPrice;
-
-    this.referralPercent =
-      ((suggestedPrice - originalPrice) / suggestedPrice) * 100;
   }
 }

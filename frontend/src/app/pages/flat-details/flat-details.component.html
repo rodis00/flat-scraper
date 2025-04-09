@@ -1,6 +1,8 @@
 <app-nav></app-nav>
 
 <div class="container mt-4">
+  @if(flat) {
+
   <div class="card">
     <div class="card-body">
       <h3 class="card-title">
@@ -19,9 +21,11 @@
           <h4 class="box-title mt-4">
             <small>wskaźnik polecenia</small>
             <span
-              [class]="referralPercent > 0 ? 'text-success' : 'text-danger'"
+              [class]="
+                flat.referralPercent > 0 ? 'text-success' : 'text-danger'
+              "
             >
-              ({{ referralPercent | number : "1.0-2" : "pl" }}%)</span
+              ({{ flat.referralPercent | number : "1.0-2" : "pl" }}%)</span
             >
           </h4>
           <h2 class="mt-4">{{ flat.price | number : "1.0-0" : "pl" }} zł</h2>
@@ -55,12 +59,12 @@
             <i class="bx bx-network-chart me-2 fs-3"></i>
             <span
               [class]="
-                suggestedPrice < flat.price
+                flat.recommendedPrice < flat.price
                   ? 'fs-3 text-success'
                   : 'fs-3 text-danger'
               "
             >
-              {{ suggestedPrice | number : "1.0-0" : "pl" }} zł</span
+              {{ flat.recommendedPrice | number : "1.0-0" : "pl" }} zł</span
             >
           </p>
           <p class="card-text d-flex align-items-center mb-2">
@@ -148,4 +152,7 @@
       </div>
     </div>
   </div>
+  } @else {
+  <h1>Flat not found</h1>
+  }
 </div>
