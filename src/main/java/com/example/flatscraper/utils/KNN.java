@@ -50,7 +50,7 @@ public class KNN {
         }
 
         // Przewidywanie wartości
-        return sum / k;
+        return Math.ceil(sum / k);
     }
 
     public static void main(String[] args) {

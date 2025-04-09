@@ -2,8 +2,10 @@ package com.example.flatscraper.service;
 
 import com.example.flatscraper.entity.FlatEntity;
 import com.example.flatscraper.enums.FieldName;
-import com.example.flatscraper.record.FlatDto;
-import com.example.flatscraper.record.FlatRequestDto;
+import com.example.flatscraper.exception.EntityNotFoundException;
+import com.example.flatscraper.model.Flat;
+import com.example.flatscraper.dto.FlatDto;
+import com.example.flatscraper.dto.FlatRequestDto;
 import com.example.flatscraper.repository.FlatRepository;
 import com.example.flatscraper.utils.KNN;
 import org.springframework.data.domain.Page;
@@ -25,11 +27,11 @@ public class FlatService {
         this.flatRepository = flatRepository;
     }
 
-    public void saveAll(List<FlatDto> flats) {
+    public void saveAll(List<Flat> flats) {
         List<FlatEntity> cleanedFlatEntities = new ArrayList<>();
 
-        for (FlatDto flatDto : flats) {
-            cleanedFlatEntities.add(cleanFlatData(flatDto));
+        for (Flat flat : flats) {
+            cleanedFlatEntities.add(cleanFlatData(flat));
         }
 
         flatRepository.saveAll(cleanedFlatEntities);
@@ -39,7 +41,7 @@ public class FlatService {
         return flatRepository.existsByUrl(url);
     }
 
-    public Page<FlatEntity> flats(
+    public Page<FlatDto> flats(
             int page,
             String address,
             FieldName sortBy
@@ -47,9 +49,36 @@ public class FlatService {
         Pageable pageable = PageRequest.of(page, 15, getSort(sortBy));
 
         if (address != null) {
-            return flatRepository.findAllByAddressContainsIgnoreCase(address, pageable);
+            return flatRepository.findAllByAddressContainsIgnoreCase(address, pageable)
+                    .map(flatEntity -> {
+                        double predictedPrice = predictFlatPrice(new FlatRequestDto(
+                                flatEntity.getArea(),
+                                flatEntity.getRooms(),
+                                flatEntity.getFloor(),
+                                flatEntity.getYearOfConstruction())
+                        );
+                        double referralPercent = calculateReferralPercent(flatEntity.getPrice(), predictedPrice);
+
+                        return FlatDto.toFlatDto(flatEntity, predictedPrice, referralPercent);
+                    });
         }
-        return flatRepository.findAll(pageable);
+        return flatRepository.findAll(pageable)
+                .map(flatEntity -> {
+                    double predictedPrice = predictFlatPrice(new FlatRequestDto(
+                            flatEntity.getArea(),
+                            flatEntity.getRooms(),
+                            flatEntity.getFloor(),
+                            flatEntity.getYearOfConstruction())
+                    );
+                    double referralPercent = calculateReferralPercent(flatEntity.getPrice(), predictedPrice);
+
+                    return FlatDto.toFlatDto(flatEntity, predictedPrice, referralPercent);
+                });
+    }
+
+    private double calculateReferralPercent(double originalPrice, double predictedPrice) {
+        double result = ((predictedPrice - originalPrice) / predictedPrice) * 100;
+        return Math.round(result * 100.0) / 100.0;
     }
 
     private Sort getSort(FieldName sortBy) {
@@ -62,10 +91,6 @@ public class FlatService {
             case YEAR_OF_CONSTRUCTION -> Sort.by(Sort.Direction.ASC, "yearOfConstruction");
             case null, default -> Sort.unsorted();
         };
-    }
-
-    public List<FlatEntity> findAll() {
-        return flatRepository.findAll();
     }
 
     public double predictFlatPrice(FlatRequestDto flatRequestDto) {
@@ -145,32 +170,32 @@ public class FlatService {
         };
     }
 
-    private FlatEntity cleanFlatData(FlatDto record) {
+    private FlatEntity cleanFlatData(Flat flat) {
         FlatEntity flatEntity = new FlatEntity();
-        flatEntity.setTitle(record.title());
-        flatEntity.setUrl(record.url());
-        flatEntity.setImageUrl(record.imageUrl());
-        flatEntity.setPrice(parseToDouble(record.price()));
-        flatEntity.setPricePerMeter(parseToDouble(record.pricePerMeter()));
-        flatEntity.setAddress(record.address());
-        flatEntity.setArea(parseToDouble(record.area()));
-        flatEntity.setRooms(parseToInt(record.rooms()));
-        flatEntity.setHeating(record.heating());
-        flatEntity.setFloor(parseFloorToInt(record.floor()));
-        flatEntity.setRent(parseToDouble(record.rent()));
-        flatEntity.setStateOfFinishing(record.stateOfFinishing());
-        flatEntity.setMarket(record.market());
-        flatEntity.setFormOfOwnership(record.formOfOwnership());
-        flatEntity.setAvailableFrom(record.availableFrom());
-        flatEntity.setAdvertiserType(record.advertiserType());
-        flatEntity.setAdditionalInfo(record.additionalInfo());
-        flatEntity.setYearOfConstruction(parseToInt(record.yearOfConstruction()));
-        flatEntity.setElevator(record.elevator());
-        flatEntity.setBuildingType(record.buildingType());
-        flatEntity.setBuildingMaterial(record.buildingMaterial());
-        flatEntity.setEquipment(record.equipment());
-        flatEntity.setSecurity(record.security());
-        flatEntity.setMedia(record.media());
+        flatEntity.setTitle(flat.getTitle());
+        flatEntity.setUrl(flat.getUrl());
+        flatEntity.setImageUrl(flat.getImageUrl());
+        flatEntity.setPrice(parseToDouble(flat.getPrice()));
+        flatEntity.setPricePerMeter(parseToDouble(flat.getPricePerMeter()));
+        flatEntity.setAddress(flat.getAddress());
+        flatEntity.setArea(parseToDouble(flat.getArea()));
+        flatEntity.setRooms(parseToInt(flat.getRooms()));
+        flatEntity.setHeating(flat.getHeating());
+        flatEntity.setFloor(parseFloorToInt(flat.getFloor()));
+        flatEntity.setRent(parseToDouble(flat.getRent()));
+        flatEntity.setStateOfFinishing(flat.getStateOfFinishing());
+        flatEntity.setMarket(flat.getMarket());
+        flatEntity.setFormOfOwnership(flat.getFormOfOwnership());
+        flatEntity.setAvailableFrom(flat.getAvailableFrom());
+        flatEntity.setAdvertiserType(flat.getAdvertiserType());
+        flatEntity.setAdditionalInfo(flat.getAdditionalInfo());
+        flatEntity.setYearOfConstruction(parseToInt(flat.getYearOfConstruction()));
+        flatEntity.setElevator(flat.getElevator());
+        flatEntity.setBuildingType(flat.getBuildingType());
+        flatEntity.setBuildingMaterial(flat.getBuildingMaterial());
+        flatEntity.setEquipment(flat.getEquipment());
+        flatEntity.setSecurity(flat.getSecurity());
+        flatEntity.setMedia(flat.getMedia());
         return flatEntity;
     }
 
@@ -199,7 +224,18 @@ public class FlatService {
         }
     }
 
-    public FlatEntity findFlatById(int id) {
-        return flatRepository.findById(id).orElse(null);
+    public FlatDto findFlatById(int id) {
+        FlatEntity flatEntity = flatRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Flat not found"));
+
+        double predictedPrice = predictFlatPrice(new FlatRequestDto(
+                flatEntity.getArea(),
+                flatEntity.getRooms(),
+                flatEntity.getFloor(),
+                flatEntity.getYearOfConstruction())
+        );
+        double referralPercent = calculateReferralPercent(flatEntity.getPrice(), predictedPrice);
+
+        return FlatDto.toFlatDto(flatEntity, predictedPrice, referralPercent);
     }
 }
