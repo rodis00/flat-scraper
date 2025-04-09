@@ -7,6 +7,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,8 @@ public class ScraperService {
         scrapeFlats();
     }
 
-    private void scrapeFlats() throws IOException {
+    @Async
+    public void scrapeFlats() throws IOException {
         int pages = 32;
         for (int i = 1; i <= pages; i++) {
             log.info("Scraping page: {}", i);
