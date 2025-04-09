@@ -16,3 +16,11 @@
 .card:hover {
   box-shadow: 0 0 0.5rem 0.5rem rgb(194, 192, 192);
 }
+
+.bx-like {
+  color: green;
+}
+
+.bx-dislike {
+  color: rgb(192, 10, 10);
+}

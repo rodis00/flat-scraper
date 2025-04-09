@@ -2,8 +2,13 @@
   <img [src]="flat.imageUrl" class="card-img-top flat-img" alt="flat image" />
 
   <div class="card-body">
-    <h5 class="card-title fs-3">
-      {{ flat.price | number : "1.0-0" : "pl" }} zł
+    <h5 class="card-title fs-3 d-flex justify-content-between">
+      {{ flat.price | number : "1.0-0" : "pl" }} zł @if(flat.referralPercent >
+      0) {
+      <i class="bx bx-like fs-1"></i>
+      }@else {
+      <i class="bx bx-dislike fs-1"></i>
+      }
     </h5>
     <h6 class="card-subtitle mb-3 text-muted fs-5">
       {{ flat.pricePerMeter | number : "1.0-0" : "pl" }} zł/m²
