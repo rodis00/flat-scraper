@@ -1,11 +1,11 @@
 package com.example.flatscraper.controller;
 
-import com.example.flatscraper.record.AuthRequestDto;
-import com.example.flatscraper.record.AuthResponseDto;
+import com.example.flatscraper.dto.AuthRequestDto;
+import com.example.flatscraper.dto.AuthResponseDto;
 import com.example.flatscraper.service.AuthService;
-import com.example.flatscraper.record.RegisterRequestDto;
-import com.example.flatscraper.record.RefreshTokenRequestDto;
-import com.example.flatscraper.record.RefreshTokenResponseDto;
+import com.example.flatscraper.dto.RegisterRequestDto;
+import com.example.flatscraper.dto.RefreshTokenRequestDto;
+import com.example.flatscraper.dto.RefreshTokenResponseDto;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

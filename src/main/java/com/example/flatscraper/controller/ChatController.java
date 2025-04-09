@@ -1,9 +1,9 @@
 package com.example.flatscraper.controller;
 
-import com.example.flatscraper.record.FlatRequestDto;
+import com.example.flatscraper.dto.FlatRequestDto;
 import com.example.flatscraper.service.FlatService;
-import com.example.flatscraper.record.ChatRequestDto;
-import com.example.flatscraper.record.ChatResponseDto;
+import com.example.flatscraper.dto.ChatRequestDto;
+import com.example.flatscraper.dto.ChatResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import groovy.util.logging.Slf4j;
 import org.slf4j.Logger;
