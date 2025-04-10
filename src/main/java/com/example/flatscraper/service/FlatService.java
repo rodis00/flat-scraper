@@ -193,7 +193,9 @@ public class FlatService {
         flatEntity.setElevator(flat.getElevator());
         flatEntity.setBuildingType(flat.getBuildingType());
         flatEntity.setBuildingMaterial(flat.getBuildingMaterial());
-        flatEntity.setEquipment(flat.getEquipment());
+        flatEntity.setWindows(flat.getWindows());
+        flatEntity.setEnergyCertificate(flat.getEnergyCertificate());
+        flatEntity.setSafety(flat.getSafety());
         flatEntity.setSecurity(flat.getSecurity());
         flatEntity.setMedia(flat.getMedia());
         return flatEntity;
@@ -216,6 +218,7 @@ public class FlatService {
     }
 
     private int parseFloorToInt(String value) {
+        if (value == null) return 0;
         try {
             value = value.split("/")[0];
             return Integer.parseInt(value);
@@ -234,6 +237,7 @@ public class FlatService {
                 flatEntity.getFloor(),
                 flatEntity.getYearOfConstruction())
         );
+
         double referralPercent = calculateReferralPercent(flatEntity.getPrice(), predictedPrice);
 
         return FlatDto.toFlatDto(flatEntity, predictedPrice, referralPercent);

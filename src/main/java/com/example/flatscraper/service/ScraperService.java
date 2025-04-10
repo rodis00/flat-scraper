@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ScraperService {
@@ -33,7 +35,8 @@ public class ScraperService {
 
     @Async
     public void scrapeFlats() throws IOException {
-        int pages = 32;
+        // TODO: jakos to ogarnac
+        int pages = 33;
         for (int i = 1; i <= pages; i++) {
             log.info("Scraping page: {}", i);
             String pageUrl = baseUrl + "&page=" + i;
@@ -81,21 +84,26 @@ public class ScraperService {
 
         Document doc = Jsoup.connect(link).get();
 
+        Flat flat = new Flat();
+        flat.setUrl(link);
+
         String title = doc.selectXpath("/html/body/div[1]/div[1]/main/div[2]/div[1]/div[1]/h1").text();
+        flat.setTitle(title);
+
         String price = doc.selectXpath("/html/body/div[1]/div[1]/main/div[2]/div[1]/div[1]/div[1]/div[1]/strong").text();
+        flat.setPrice(price);
+
         String pricePerMeter = doc.selectXpath("/html/body/div[1]/div[1]/main/div[2]/div[1]/div[1]/div[1]/div[2]/div").text();
+        flat.setPricePerMeter(pricePerMeter);
+
         String address = doc.selectXpath("/html/body/div[1]/div[1]/main/div[2]/div[1]/div[1]/div[2]/a").text();
+        flat.setAddress(address);
+
         String area = doc.selectXpath("/html/body/div[1]/div[1]/main/div[2]/div[1]/div[2]/div[1]/button[1]/div[2]").text();
+        flat.setArea(area);
+
         String rooms = doc.selectXpath("/html/body/div[1]/div[1]/main/div[2]/div[1]/div[2]/div[1]/button[2]/div[2]").text();
-        String heating = doc.selectXpath("/html/body/div[1]/div[1]/main/div[2]/div[1]/div[2]/div[2]/div[1]/p[2]").text();
-        String floor = doc.selectXpath("/html/body/div[1]/div[1]/main/div[2]/div[1]/div[2]/div[2]/div[3]/p[2]").text();
-        String rent = doc.selectXpath("/html/body/div[1]/div[1]/main/div[2]/div[1]/div[2]/div[2]/div[5]/p[2]").text();
-        String stateOfFinishing = doc.selectXpath("/html/body/div[1]/div[1]/main/div[2]/div[1]/div[2]/div[2]/div[7]/p[2]").text();
-        String market = doc.selectXpath("/html/body/div[1]/div[1]/main/div[2]/div[1]/div[2]/div[2]/div[9]/p[2]").text();
-        String formOfOwnership = doc.selectXpath("/html/body/div[1]/div[1]/main/div[2]/div[1]/div[2]/div[2]/div[11]/p[2]").text();
-        String availableFrom = doc.selectXpath("/html/body/div[1]/div[1]/main/div[2]/div[1]/div[2]/div[2]/div[13]/p[2]").text();
-        String advertiserType = doc.selectXpath("/html/body/div[1]/div[1]/main/div[2]/div[1]/div[2]/div[2]/div[15]/p[2]").text();
-        String additionalInfo = doc.selectXpath("/html/body/div[1]/div[1]/main/div[2]/div[1]/div[2]/div[2]/div[17]/p[2]").text();
+        flat.setRooms(rooms);
 
         Element picture = doc.selectFirst("picture");
         String imageUrl = null;
@@ -103,42 +111,46 @@ public class ScraperService {
             Element source = picture.selectFirst("source[media=\"(min-width: 768px)\"]");
             imageUrl = (source != null) ? source.attr("srcset") : picture.selectFirst("img").attr("src");
         }
-
-        String yearOfConstruction = doc.selectXpath("/html/body/div[1]/div[1]/main/div[2]/div[1]/div[2]/div[3]/div/div/div[1]/p[2]").text();
-        String elevator = doc.selectXpath("/html/body/div[1]/div[1]/main/div[2]/div[1]/div[2]/div[3]/div/div/div[3]/p[2]").text();
-        String buildingType = doc.selectXpath("/html/body/div[1]/div[1]/main/div[2]/div[1]/div[2]/div[3]/div/div/div[5]/p[2]").text();
-        String buildingMaterial = doc.selectXpath("/html/body/div[1]/div[1]/main/div[2]/div[1]/div[2]/div[3]/div/div/div[7]/p[2]").text();
-
-        String equipment = doc.selectXpath("/html/body/div[1]/div[1]/main/div[2]/div[1]/div[2]/div[3]/div[2]/div/div[1]/p[2]").text();
-        String security = doc.selectXpath("/html/body/div[1]/div[1]/main/div[2]/div[1]/div[2]/div[3]/div[1]/div/div[9]/p[2]").text();
-        String media = doc.selectXpath("/html/body/div[1]/div[1]/main/div[2]/div[1]/div[2]/div[3]/div[2]/div/div[5]/p[2]").text();
-
-
-        Flat flat = new Flat();
-        flat.setTitle(title);
-        flat.setUrl(link);
         flat.setImageUrl(imageUrl);
-        flat.setPrice(price);
-        flat.setPricePerMeter(pricePerMeter);
-        flat.setAddress(address);
-        flat.setArea(area);
-        flat.setRooms(rooms);
-        flat.setHeating(heating);
-        flat.setFloor(floor);
-        flat.setRent(rent);
-        flat.setStateOfFinishing(stateOfFinishing);
-        flat.setMarket(market);
-        flat.setFormOfOwnership(formOfOwnership);
-        flat.setAvailableFrom(availableFrom);
-        flat.setAdvertiserType(advertiserType);
-        flat.setAdditionalInfo(additionalInfo);
-        flat.setYearOfConstruction(yearOfConstruction);
-        flat.setElevator(elevator);
-        flat.setBuildingType(buildingType);
-        flat.setBuildingMaterial(buildingMaterial);
-        flat.setEquipment(equipment);
-        flat.setSecurity(security);
-        flat.setMedia(media);
+
+        String[] fieldNames = {
+                "Ogrzewanie", "Piętro", "Czynsz", "Stan wykończenia",
+                "Rynek", "Forma własności", "Dostępne od", "Typ ogłoszeniodawcy",
+                "Informacje dodatkowe", "Rok budowy", "Winda", "Rodzaj zabudowy",
+                "Materiał budynku", "Okna", "Certyfikat energetyczny", "Bezpieczeństwo",
+                "Zabezpieczenia", "Media"
+        };
+
+
+        Map<String, String> attributes = new HashMap<>();
+        for (String fieldName : fieldNames) {
+            Element parent = doc.select(String.format("div p:contains(%s)", fieldName)).first();
+            if (parent != null) {
+                Element child = parent.nextElementSibling();
+                if (child != null && !child.text().isEmpty() && !child.text().equals("brak informacji")) {
+                    attributes.put(fieldName, child.text());
+                }
+            }
+        }
+
+        flat.setHeating(attributes.get(fieldNames[0]));
+        flat.setFloor(attributes.get(fieldNames[1]));
+        flat.setRent(attributes.get(fieldNames[2]));
+        flat.setStateOfFinishing(attributes.get(fieldNames[3]));
+        flat.setMarket(attributes.get(fieldNames[4]));
+        flat.setFormOfOwnership(attributes.get(fieldNames[5]));
+        flat.setAvailableFrom(attributes.get(fieldNames[6]));
+        flat.setAdvertiserType(attributes.get(fieldNames[7]));
+        flat.setAdditionalInfo(attributes.get(fieldNames[8]));
+        flat.setYearOfConstruction(attributes.get(fieldNames[9]));
+        flat.setElevator(attributes.get(fieldNames[10]));
+        flat.setBuildingType(attributes.get(fieldNames[11]));
+        flat.setBuildingMaterial(attributes.get(fieldNames[12]));
+        flat.setWindows(attributes.get(fieldNames[13]));
+        flat.setEnergyCertificate(attributes.get(fieldNames[14]));
+        flat.setSafety(attributes.get(fieldNames[15]));
+        flat.setSecurity(attributes.get(fieldNames[16]));
+        flat.setMedia(attributes.get(fieldNames[17]));
 
         return flat;
     }

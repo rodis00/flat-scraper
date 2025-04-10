@@ -22,6 +22,35 @@ public class Flat {
     private String elevator;
     private String buildingType;
     private String buildingMaterial;
+    private String security;
+    private String media;
+    private String windows;
+    private String energyCertificate;
+    private String safety;
+
+    public String getWindows() {
+        return windows;
+    }
+
+    public void setWindows(String windows) {
+        this.windows = windows;
+    }
+
+    public String getEnergyCertificate() {
+        return energyCertificate;
+    }
+
+    public void setEnergyCertificate(String energyCertificate) {
+        this.energyCertificate = energyCertificate;
+    }
+
+    public String getSafety() {
+        return safety;
+    }
+
+    public void setSafety(String safety) {
+        this.safety = safety;
+    }
 
     public String getBuildingMaterial() {
         return buildingMaterial;
@@ -30,10 +59,6 @@ public class Flat {
     public void setBuildingMaterial(String buildingMaterial) {
         this.buildingMaterial = buildingMaterial;
     }
-
-    private String equipment;
-    private String security;
-    private String media;
 
     public String getTitle() {
         return title;
@@ -193,14 +218,6 @@ public class Flat {
 
     public void setBuildingType(String buildingType) {
         this.buildingType = buildingType;
-    }
-
-    public String getEquipment() {
-        return equipment;
-    }
-
-    public void setEquipment(String equipment) {
-        this.equipment = equipment;
     }
 
     public String getSecurity() {

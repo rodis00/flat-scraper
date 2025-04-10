@@ -27,9 +27,11 @@ public record FlatDto(
         String elevator,
         String buildingType,
         String buildingMaterial,
-        String equipment,
         String security,
-        String media
+        String media,
+        String windows,
+        String energyCertificate,
+        String safety
 ) {
     public static FlatDto toFlatDto(
             FlatEntity flat,
@@ -61,9 +63,11 @@ public record FlatDto(
                 flat.getElevator(),
                 flat.getBuildingType(),
                 flat.getBuildingMaterial(),
-                flat.getEquipment(),
                 flat.getSecurity(),
-                flat.getMedia()
+                flat.getMedia(),
+                flat.getWindows(),
+                flat.getEnergyCertificate(),
+                flat.getSafety()
         );
     }
 }

@@ -14,7 +14,7 @@ export interface IFlatFull {
   floor: number;
   rent: number;
   stateOfFinishing: string;
-  martket: string;
+  market: string;
   formOfOwnership: string;
   availableFrom: string;
   advertiserType: string;
@@ -23,7 +23,9 @@ export interface IFlatFull {
   elevator: string;
   buildingType: string;
   buildingMaterial: string;
-  equipment: string;
   security: string;
+  windows: string;
+  safety: string;
+  energyCertificate: string;
   media: string;
 }

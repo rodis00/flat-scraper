@@ -54,13 +54,41 @@ public class FlatEntity {
 
     private String buildingMaterial;
 
-    private String equipment;
-
     private String security;
 
     private String media;
 
+    private String windows;
+
+    private String energyCertificate;
+
+    private String safety;
+
     public FlatEntity() {
+    }
+
+    public String getWindows() {
+        return windows;
+    }
+
+    public void setWindows(String windows) {
+        this.windows = windows;
+    }
+
+    public String getEnergyCertificate() {
+        return energyCertificate;
+    }
+
+    public void setEnergyCertificate(String energyCertificate) {
+        this.energyCertificate = energyCertificate;
+    }
+
+    public String getSafety() {
+        return safety;
+    }
+
+    public void setSafety(String safety) {
+        this.safety = safety;
     }
 
     public Integer getId() {
@@ -221,14 +249,6 @@ public class FlatEntity {
 
     public void setBuildingMaterial(String buildingMaterial) {
         this.buildingMaterial = buildingMaterial;
-    }
-
-    public String getEquipment() {
-        return equipment;
-    }
-
-    public void setEquipment(String equipment) {
-        this.equipment = equipment;
     }
 
     public String getSecurity() {
