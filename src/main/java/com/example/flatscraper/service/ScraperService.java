@@ -70,7 +70,8 @@ public class ScraperService {
         }
         for (Element offer : offers) {
             String link = offer.attr("href");
-            flatsLinks.add(prefix + link);
+            if (link.startsWith("/pl/oferta")){
+                flatsLinks.add(prefix + link);}
         }
         return flatsLinks;
     }
@@ -124,7 +125,11 @@ public class ScraperService {
 
         Map<String, String> attributes = new HashMap<>();
         for (String fieldName : fieldNames) {
-            Element parent = doc.select(String.format("div p:contains(%s)", fieldName)).first();
+            Element parent = doc.select("div p").stream()
+                    .filter(p -> p.text().trim().equals(fieldName + ":"))
+                    .findFirst()
+                    .orElse(null);
+
             if (parent != null) {
                 Element child = parent.nextElementSibling();
                 if (child != null && !child.text().isEmpty() && !child.text().equals("brak informacji")) {
