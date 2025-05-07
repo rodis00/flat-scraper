@@ -5,6 +5,7 @@ import { FlatDetailsComponent } from './pages/flat-details/flat-details.componen
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { PricingComponent } from './pages/pricing/pricing.component';
 
 export const routes: Routes = [
   {
@@ -18,6 +19,12 @@ export const routes: Routes = [
     title: 'Flat Details',
     component: FlatDetailsComponent,
     canActivate: [authGuard],
+  },
+  {
+    path: 'pricing',
+    title: 'Pricing',
+    component: PricingComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'auth/login',

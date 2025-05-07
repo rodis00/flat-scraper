@@ -1,0 +1,25 @@
+<app-nav></app-nav>
+
+<div class="container">
+<h2 class="mt-4 mb-4">Asystent wyceny mieszkania</h2>
+
+<div *ngIf="chatHistory.length > 0" class="mt-4">
+    <h5>Historia rozmowy:</h5>
+    @for (msg of chatHistory; track msg) {
+        <div class="d-flex mb-2"
+            [ngClass]="{ 'justify-content-start': msg.from === 'user', 'justify-content-end': msg.from === 'bot' }">
+            <div class="chat-bubble p-3 rounded-3 shadow-sm"
+                [ngClass]="{
+                    'bg-primary text-white': msg.from === 'user',
+                    'bg-light text-dark': msg.from === 'bot'
+                }"
+                [innerHTML]="sanitizeHtml(msg.content)">
+            </div>
+        </div>
+    }
+</div>
+<div class="mt-4">
+    <label for="userMessage" class="form-label">Wprowadź wiadomość</label>
+    <textarea id="userMessage" [(ngModel)]="userMessage" rows="4" class="form-control"></textarea>
+    <button class="btn btn-primary mt-2" (click)="sendMessage()">Wyślij</button>
+</div>
