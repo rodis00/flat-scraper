@@ -100,10 +100,10 @@ public class ScraperService {
         String address = doc.selectXpath("/html/body/div[1]/div[1]/main/div[2]/div[1]/div[1]/div[2]/a").text();
         flat.setAddress(address);
 
-        String area = doc.selectXpath("/html/body/div[1]/div[1]/main/div[2]/div[1]/div[2]/div[1]/button[1]/div[2]").text();
+        String area = doc.selectXpath("/html/body/div[1]/div[1]/main/div[2]/div[1]/div[2]/div[1]/div[1]/p[2]").text();
         flat.setArea(area);
 
-        String rooms = doc.selectXpath("/html/body/div[1]/div[1]/main/div[2]/div[1]/div[2]/div[1]/button[2]/div[2]").text();
+        String rooms = doc.selectXpath("/html/body/div[1]/div[1]/main/div[2]/div[1]/div[2]/div[1]/div[3]/p[2]").text();
         flat.setRooms(rooms);
 
         Element picture = doc.selectFirst("picture");
