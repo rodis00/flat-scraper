@@ -1,11 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { TokenInterface } from '../../interfaces/token';
+import { TokenService } from '../../services/token.service';
+import { ErrorInterface } from '../../interfaces/error';
 
 @Component({
   selector: 'app-register',
@@ -14,6 +18,14 @@ import { RouterLink } from '@angular/router';
   styleUrl: './register.component.css',
 })
 export class RegisterComponent {
+  authService: AuthService = inject(AuthService);
+  tokenService: TokenService = inject(TokenService);
+  router: Router = inject(Router);
+
+  usernameError: string | null = null;
+  passwordError: string | null = null;
+  emailError: string | null = null;
+
   registerForm = new FormGroup({
     username: new FormControl('', [
       Validators.required,
@@ -42,11 +54,31 @@ export class RegisterComponent {
   }
 
   onSubmit() {
-    alert(
-      '' +
-        this.registerForm.value.username +
-        this.registerForm.value.email +
-        this.registerForm.value.password
-    );
+    this.authService
+      .register({
+        username: this.registerForm.value.username!,
+        password: this.registerForm.value.password!,
+        email: this.registerForm.value.email!,
+      })
+      .subscribe({
+        next: (response) => {
+          const token: TokenInterface = response;
+          this.tokenService.setToken(token.accessToken);
+          this.router.navigate(['']);
+        },
+        error: (error) => {
+          const err: ErrorInterface = error.error;
+          if (err.error === 'username') {
+            this.usernameError = err.message;
+          }
+          if (err.error === 'password') {
+            this.passwordError = err.message;
+          }
+          if (err.error === 'email') {
+            this.emailError = err.message;
+          }
+          console.log(error);
+        },
+      });
   }
 }

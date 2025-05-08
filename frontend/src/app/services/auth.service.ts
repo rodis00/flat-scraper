@@ -15,10 +15,13 @@ export class AuthService {
   http: HttpClient = inject(HttpClient);
   router: Router = inject(Router);
 
-  apiUrl: string = 'http://localhost:8080/api/v1/auth/authenticate';
+  apiUrl: string = 'http://localhost:8080/api/v1/auth';
 
   login(loginData: LoginData): Observable<TokenInterface> {
-    return this.http.post<TokenInterface>(this.apiUrl, loginData);
+    return this.http.post<TokenInterface>(
+      `${this.apiUrl}/authenticate`,
+      loginData
+    );
   }
 
   logout(): void {
@@ -26,7 +29,12 @@ export class AuthService {
     this.router.navigate(['/auth/login']);
   }
 
-  register(RegisterData: RegisterData): void {}
+  register(registerData: RegisterData): Observable<TokenInterface> {
+    return this.http.post<TokenInterface>(
+      `${this.apiUrl}/register`,
+      registerData
+    );
+  }
 
   isLoggedIn(): boolean {
     return this.tokenService.getToken() !== null;
