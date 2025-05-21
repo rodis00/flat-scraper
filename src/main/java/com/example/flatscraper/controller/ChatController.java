@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 
 @RestController
@@ -46,10 +48,20 @@ public class ChatController {
     public ResponseEntity<ChatResponseDto> predictPrice(@RequestBody ChatRequestDto chatRequestDto) {
         String message = chatRequestDto.message().toLowerCase();
 
-        boolean hasEnoughData = message.contains("powierzchnia") &&
-                message.contains("pokoi") &&
-                (message.contains("rok budowy") || message.contains("rok") || message.contains("zbudowane")) &&
-                message.contains("piętro");
+        String[] keywords = {
+                "powierzchnia", "powierzchni", "pokoi", "pokoje", "rok", "roku", "budownictwa",
+                "piętro", "piętra", "pięterze"
+        };
+
+        int counter = 0;
+
+        for (String keyword : keywords) {
+            if (message.contains(keyword)) {
+                counter++;
+            }
+        }
+
+        boolean hasEnoughData = counter >= 4;
 
         if (!hasEnoughData) {
             return ResponseEntity.ok(new ChatResponseDto(
